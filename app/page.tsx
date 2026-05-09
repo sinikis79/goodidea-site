@@ -36,6 +36,7 @@ const services = [
     title: "우울·불안",
     description: "가라앉은 기분, 긴장, 걱정이 일상을 방해할 때 함께 살핍니다.",
     keywords: ["우울감", "불안", "공황", "긴장"],
+    imageSrc: "/images/services/depression.jpg",
     imageClass: "object-center",
     overlayClass: "bg-[#2f2a24]/0",
   },
@@ -43,6 +44,7 @@ const services = [
     title: "스트레스·번아웃",
     description: "일과 관계 속에서 소진된 마음의 회복 방향을 정리합니다.",
     keywords: ["번아웃", "직장 스트레스", "대인관계", "수면"],
+    imageSrc: "/images/services/stress-burnout.jpg",
     imageClass: "object-left",
     overlayClass: "bg-[#6f8b74]/10",
   },
@@ -50,6 +52,7 @@ const services = [
     title: "청소년 상담",
     description: "학업, 또래 관계, 감정 조절의 어려움을 균형 있게 다룹니다.",
     keywords: ["학업 스트레스", "또래관계", "감정조절", "보호자 상담"],
+    imageSrc: "/images/services/adolescent.jpg",
     imageClass: "object-right",
     overlayClass: "bg-[#8a735b]/10",
   },
@@ -57,6 +60,7 @@ const services = [
     title: "수면 문제",
     description: "잠들기 어려움, 자주 깨는 문제, 생활 리듬을 함께 점검합니다.",
     keywords: ["불면", "수면리듬", "피로감", "생활습관"],
+    imageSrc: "/images/services/sleep.jpg",
     imageClass: "object-[50%_62%]",
     overlayClass: "bg-[#2f2a24]/5",
   },
@@ -64,6 +68,7 @@ const services = [
     title: "주의집중",
     description: "집중력 저하와 충동성, 일상 관리의 어려움을 살펴봅니다.",
     keywords: ["ADHD", "집중력", "충동성", "일상관리"],
+    imageSrc: "/images/services/attention.jpg",
     imageClass: "object-[35%_50%]",
     overlayClass: "bg-[#6f8b74]/5",
   },
@@ -71,6 +76,7 @@ const services = [
     title: "가족·관계",
     description: "반복되는 갈등과 대화 방식을 안전하게 조율합니다.",
     keywords: ["가족갈등", "부부상담", "관계패턴", "대화방식"],
+    imageSrc: "/images/services/family-relationship.jpg",
     imageClass: "object-[70%_50%]",
     overlayClass: "bg-[#8a735b]/5",
   },
@@ -136,16 +142,16 @@ export default function Home() {
 
       <section className="bg-white">
         <div className="mx-auto grid max-w-[1400px] gap-8 px-5 py-14 sm:px-8 sm:py-[4.5rem] lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:py-24">
-          <div className="max-w-[680px]">
+          <div className="max-w-[640px]">
             <p className="text-sm font-black text-[#6f8b74]">
               마음이 쉬어가는 따뜻한 진료 공간
             </p>
-            <h1 className="mt-5 text-4xl font-black leading-[1.16] tracking-tight text-[#2f2a24] sm:text-5xl sm:leading-[1.12] lg:text-6xl">
+            <h1 className="mt-6 text-4xl font-extrabold leading-[1.26] tracking-tight text-[#2f2a24] sm:text-5xl sm:leading-[1.18] lg:text-6xl">
               좋은 사람을 만나
               <br />
               좋은 일이 생기는 곳
             </h1>
-            <p className="mt-6 max-w-[65ch] text-base leading-relaxed text-[#665849] sm:text-lg">
+            <p className="mt-7 max-w-[52ch] text-base leading-relaxed text-[#665849] sm:text-lg">
               충분히 듣고, 차분히 살피며, 일상으로 돌아갈 힘을 함께 찾습니다.
               처음 방문하는 순간부터 불필요한 긴장을 덜 수 있도록 명확한 안내와
               조용한 공간을 준비했습니다.
@@ -168,7 +174,7 @@ export default function Home() {
 
           <div className="relative overflow-hidden rounded-[2rem] border border-[#eadfce] bg-[#f7f1e8] shadow-[0_24px_70px_rgba(83,62,39,0.12)] lg:translate-y-8">
             <Image
-              src="/clinic-hero.png"
+              src="/images/hero/main-hero.jpg"
               alt="따뜻한 햇살이 드는 상담 공간"
               width={1280}
               height={720}
@@ -234,7 +240,7 @@ export default function Home() {
               >
                 <div className="relative overflow-hidden border-b border-[#e1d3c0] bg-[#f7f1e8]">
                   <Image
-                    src="/clinic-hero.png"
+                    src={service.imageSrc}
                     alt={`${service.title} 진료과목 이미지`}
                     width={1280}
                     height={720}
