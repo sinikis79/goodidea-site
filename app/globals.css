@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fffaf3;
+  --foreground: #2f2a24;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-pretendard), "Apple SD Gothic Neo", "Malgun Gothic",
+    "Noto Sans KR", Arial, Helvetica, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-pretendard), "Apple SD Gothic Neo", "Malgun Gothic",
+    "Noto Sans KR", Arial, Helvetica, sans-serif;
+  font-synthesis-weight: none;
+  letter-spacing: 0;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  text-rendering: optimizeLegibility;
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  -webkit-text-size-adjust: 100%;
+}
+
+::selection {
+  background: #d9c5a8;
+  color: #2f2a24;
+}
