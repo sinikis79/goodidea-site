@@ -1,5 +1,6 @@
 import Image from "next/image";
 import BottomNav from "@/components/BottomNav";
+import QuickLinksSection from "@/components/QuickLinksSection";
 
 const menuItems = [
   { label: "소개", href: "#about" },
@@ -8,28 +9,6 @@ const menuItems = [
   { label: "오시는 길", href: "#location" },
 ];
 
-const quickLinks = [
-  {
-    title: "전화 상담",
-    description: "방문 전 궁금한 점을 바로 문의하세요.",
-    href: "tel:031-000-0000",
-  },
-  {
-    title: "오시는 길",
-    description: "주소와 주차 안내를 확인할 수 있습니다.",
-    href: "#location",
-  },
-  {
-    title: "진료 시간",
-    description: "예약 가능한 시간대를 미리 살펴보세요.",
-    href: "#hours",
-  },
-  {
-    title: "상담 안내",
-    description: "처음 방문하는 분을 위한 흐름입니다.",
-    href: "#services",
-  },
-];
 
 const services = [
   {
@@ -94,18 +73,26 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
       <header className="sticky top-0 z-40 border-b border-[#e5ddd4] bg-[#fffcf7]/95 backdrop-blur">
-        <nav className="mx-auto flex max-w-[1400px] items-center justify-between gap-3 px-5 py-4 sm:gap-4 sm:px-8">
+        <nav className="mx-auto flex max-w-[1400px] items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:px-8">
           <a
             href="#"
-            className="relative flex h-[60px] w-[250px] max-w-[calc(100vw-96px)] shrink-0 items-center sm:w-[280px]"
+            className="flex h-[70px] max-w-[calc(100vw-76px)] shrink-0 items-center gap-2"
           >
             <Image
-              src="/images/common/logo-horizontal.png"
-              alt="판교다시봄정신건강의학과"
-              width={720}
+              src="/images/common/logo-symbol.png"
+              alt=""
+              width={160}
               height={160}
               priority
-              className="max-h-14 w-full object-contain object-left"
+              className="h-[48px] w-[48px] shrink-0 object-contain"
+            />
+            <Image
+              src="/images/common/logo-wordmark.png"
+              alt="판교다시봄정신건강의학과"
+              width={760}
+              height={180}
+              priority
+              className="h-[50px] w-[330px] max-w-[calc(100vw-120px)] object-contain object-left sm:w-[360px]"
             />
           </a>
 
@@ -145,27 +132,29 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className="bg-[#fffcf7]">
+      <section className="relative isolate overflow-hidden bg-[#f8f5f1]">
         <style>
           {`
             @keyframes hero-soft-reveal {
               from {
                 opacity: 0;
-                transform: translateY(14px);
+                filter: blur(3px);
+                transform: translateY(28px);
               }
               to {
                 opacity: 1;
+                filter: blur(0px);
                 transform: translateY(0);
               }
             }
 
             .hero-reveal {
               opacity: 0;
-              animation: hero-soft-reveal 950ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+              animation: hero-soft-reveal 2200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
             }
 
             .hero-reveal-image {
-              animation-duration: 1100ms;
+              animation-duration: 2400ms;
             }
 
             @media (prefers-reduced-motion: reduce) {
@@ -177,63 +166,47 @@ export default function Home() {
             }
           `}
         </style>
-        <div className="mx-auto grid max-w-[1400px] gap-10 px-6 py-16 sm:px-10 sm:py-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-12 lg:py-28">
-          <div className="max-w-[680px]">
-            <p className="hero-reveal text-[13px] font-black tracking-[0.08em] text-[#8a8073] [animation-delay:180ms]">
+        <Image
+          src="/images/hero/clinic-entrance.jpg"
+          alt="판교다시봄정신건강의학과 공간"
+          fill
+          priority
+          sizes="100vw"
+          className="absolute inset-0 -z-20 h-full w-full object-cover object-[52%_42%] lg:object-center"
+        />
+        <div className="absolute inset-0 -z-10 bg-[#2b2a28]/10" />
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-[54%] bg-gradient-to-t from-[#f8f5f1]/88 via-[#f8f5f1]/28 to-transparent" />
+        <div className="absolute inset-x-[-10%] bottom-[-3rem] -z-10 h-28 bg-[#f8f5f1] blur-2xl" />
+
+        <div className="mx-auto flex min-h-[590px] max-w-[1400px] items-start px-6 pb-8 pt-28 sm:px-10 sm:py-24 lg:min-h-[760px] lg:items-center lg:px-12 lg:py-28">
+          <div className="relative mx-auto max-w-[760px] text-center before:absolute before:inset-x-[-1.5rem] before:inset-y-[-1.25rem] before:-z-10 before:rounded-[2rem] before:bg-[#2b2a28]/18 before:blur-2xl lg:mx-0 lg:max-w-[780px] lg:-translate-y-6 lg:text-left lg:before:hidden">
+            <p className="hero-reveal text-[13px] font-black tracking-[0.14em] text-[#f1ece5] [animation-delay:300ms]">
               마음이 쉬어가는 따뜻한 진료 공간
             </p>
-            <h1 className="hero-reveal mt-6 max-w-[11ch] text-[2.55rem] font-extrabold leading-[1.18] tracking-tight text-[#2b2a28] [animation-delay:320ms] sm:text-5xl sm:leading-[1.16] lg:text-6xl lg:leading-[1.12]">
+            <h1 className="hero-reveal mx-auto mt-6 max-w-[9.5em] text-balance text-[2.45rem] font-extrabold leading-[1.14] tracking-tight text-[#fffcf7] [animation-delay:600ms] sm:text-6xl sm:leading-[1.1] lg:mx-0 lg:text-7xl lg:leading-[1.05]">
               당신의 마음에도
               <br />
-              다시 봄이 올 수 있도록
+              <span className="whitespace-nowrap">다시 봄이 올 수 있도록</span>
             </h1>
-            <div className="hero-reveal mt-9 flex flex-col gap-3 [animation-delay:500ms] sm:flex-row">
+            <div className="hero-reveal mx-auto mt-8 flex max-w-[420px] flex-col gap-3 [animation-delay:1000ms] sm:flex-row sm:justify-center lg:mx-0 lg:justify-start">
               <a
                 href="tel:031-000-0000"
-                className="flex min-h-14 items-center justify-center rounded-2xl border border-[#8a8073] bg-[#8a8073] px-6 text-base font-black text-[#fffcf7] shadow-[0_18px_40px_rgba(73,64,55,0.18)] transition active:scale-[0.98] hover:bg-[#756c61]"
+                className="flex min-h-14 items-center justify-center rounded-2xl border border-[#fffcf7]/70 bg-[#fffcf7] px-6 text-base font-black text-[#4b4741] shadow-[0_18px_40px_rgba(43,42,40,0.18)] transition active:scale-[0.98] hover:bg-[#f1ece5]"
               >
                 전화로 상담 문의하기
               </a>
               <a
                 href="#hours"
-                className="flex min-h-14 items-center justify-center rounded-2xl border border-[#cfc3b5] bg-[#fffcf7] px-6 text-base font-black text-[#4b4741] shadow-[0_18px_40px_rgba(73,64,55,0.06)] transition active:scale-[0.98] hover:border-[#8a8073]"
+                className="flex min-h-14 items-center justify-center rounded-2xl border border-[#fffcf7]/60 bg-[#2b2a28]/24 px-6 text-base font-black text-[#fffcf7] shadow-[0_18px_40px_rgba(43,42,40,0.12)] transition active:scale-[0.98] hover:bg-[#2b2a28]/34"
               >
                 운영시간 확인하기
               </a>
             </div>
           </div>
-
-          <div className="hero-reveal hero-reveal-image relative overflow-hidden rounded-[2rem] border border-[#e5ddd4] bg-[#f1ece5] shadow-[0_24px_70px_rgba(73,64,55,0.11)] [animation-delay:80ms] lg:translate-y-8">
-            <Image
-              src="/images/hero/main-hero.jpg"
-              alt="따뜻한 햇살이 드는 상담 공간"
-              width={1280}
-              height={720}
-              priority
-              className="aspect-[4/3] w-full object-cover sm:aspect-[16/10] lg:aspect-[4/3]"
-            />
-          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1400px] px-5 py-14 sm:px-8 sm:py-20">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1.2fr]">
-          {quickLinks.map((item) => (
-            <a
-              key={item.title}
-              href={item.href}
-              className="rounded-2xl border border-[#e5ddd4] bg-[#fffcf7] p-6 shadow-[0_18px_42px_rgba(73,64,55,0.06)] transition active:scale-[0.98] hover:-translate-y-1 sm:p-7"
-            >
-              <h2 className="text-[1.35rem] font-black leading-[1.25] text-[#2b2a28]">
-                {item.title}
-              </h2>
-              <p className="mt-3 text-base leading-7 text-[#7b756c]">
-                {item.description}
-              </p>
-            </a>
-          ))}
-        </div>
-      </section>
+      <QuickLinksSection />
 
       <section
         id="about"
@@ -247,7 +220,7 @@ export default function Home() {
         </div>
         <div className="border-l-0 border-[#cfc3b5] bg-transparent p-0 lg:border-l lg:pl-10">
           <p className="max-w-[58ch] text-[1.05rem] leading-8 text-[#7b756c] sm:text-lg">
-            좋은마음 정신건강의학과는 평가보다 이해를, 빠른 결론보다 충분한
+            판교다시봄정신건강의학과는 평가보다 이해를, 빠른 결론보다 충분한
             탐색을 중요하게 생각합니다. 낯선 방문의 긴장이 조금 덜어지도록
             따뜻한 분위기와 명확한 안내를 준비했습니다.
           </p>
@@ -342,10 +315,10 @@ export default function Home() {
               편안히 찾아오실 수 있도록 안내합니다.
             </h2>
             <div className="mt-7 max-w-[58ch] space-y-4 text-[1.05rem] leading-8 text-[#7b756c] sm:text-lg">
-              <p>경기도 성남시 분당구 마음로 12, 좋은빌딩 3층</p>
+              <p>경기 성남시 분당구 판교역로192번길 16 판교타워</p>
               <p>
-                마음역 2번 출구에서 도보 6분 거리입니다. 자차 이용 시 건물
-                뒤편 공영주차장을 이용하실 수 있습니다.
+                판교역 인근에서 편안히 찾아오실 수 있습니다. 자차 이용 시 건물
+                및 인근 주차 안내를 확인해 주세요.
               </p>
             </div>
           </div>
