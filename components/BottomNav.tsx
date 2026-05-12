@@ -12,7 +12,7 @@ function BottomNavIcon({
   name: (typeof bottomNavItems)[number]["icon"];
 }) {
   const common = {
-    className: "h-5 w-5",
+    className: "h-7 w-7",
     fill: "none",
     stroke: "currentColor",
     strokeLinecap: "round" as const,
@@ -70,7 +70,7 @@ function BottomNavIcon({
 
 export default function BottomNav() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#d8c8b2] bg-white/95 px-2 pt-3 pb-[calc(0.875rem+env(safe-area-inset-bottom))] shadow-[0_-10px_30px_rgba(83,62,39,0.12)] backdrop-blur md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#cfc3b5] bg-[#fffcf7]/95 px-2 pt-3 pb-[calc(0.875rem+env(safe-area-inset-bottom))] shadow-[0_-10px_30px_rgba(73,64,55,0.11)] backdrop-blur md:hidden">
       <nav
         aria-label="모바일 상담 바로가기"
         className="mx-auto grid max-w-xl grid-cols-5 gap-0"
@@ -79,9 +79,9 @@ export default function BottomNav() {
           <a
             key={item.label}
             href={item.href}
-            className="flex min-h-[72px] w-full flex-col items-center justify-center gap-1.5 rounded-2xl border border-transparent px-1 text-center text-[11px] font-black leading-tight text-[#4d4237] transition-[transform,background-color,border-color,color] duration-200 ease-out active:scale-[0.98] active:border-[#eadfce] active:bg-[#fffaf3]"
+            className="flex min-h-[80px] w-full flex-col items-center justify-center gap-2 rounded-2xl border border-transparent px-1 text-center text-[13px] font-bold leading-tight text-[#4b4741] transition-[transform,background-color,border-color,color] duration-200 ease-out active:scale-[0.98] active:border-[#cfc3b5] active:bg-[#f1ece5]"
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-[#f5efe5]/70 text-[#6f8b74]">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f1ece5] text-[#756c61]">
               <BottomNavIcon name={item.icon} />
             </span>
             <span className="block w-full truncate">{item.label}</span>
