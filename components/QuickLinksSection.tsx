@@ -73,7 +73,7 @@ function QuickIcon({ name }: { name: string }) {
 
 export default function QuickLinksSection() {
   return (
-    <section className="mx-auto max-w-[1400px] px-5 pb-12 pt-8 sm:px-8 sm:pb-[4.5rem] sm:pt-12">
+    <section className="mx-auto max-w-[1400px] px-5 pb-8 pt-6 sm:px-8 sm:pb-14 sm:pt-10 lg:pb-16 lg:pt-12">
       <style>{`
         @keyframes ql-reveal {
           from { opacity: 0; transform: translateY(20px); }

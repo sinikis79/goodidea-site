@@ -75,8 +75,8 @@ export default function Home() {
             @keyframes hero-soft-reveal {
               from {
                 opacity: 0;
-                filter: blur(3px);
-                transform: translateY(28px);
+                filter: blur(1.5px);
+                transform: translateY(10px);
               }
               to {
                 opacity: 1;
@@ -87,11 +87,11 @@ export default function Home() {
 
             .hero-reveal {
               opacity: 0;
-              animation: hero-soft-reveal 2200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+              animation: hero-soft-reveal 3200ms cubic-bezier(0.19, 1, 0.22, 1) forwards;
             }
 
             .hero-reveal-image {
-              animation-duration: 2400ms;
+              animation-duration: 3400ms;
             }
 
             @media (prefers-reduced-motion: reduce) {
@@ -117,24 +117,24 @@ export default function Home() {
 
         <div className="mx-auto flex min-h-[590px] max-w-[1400px] items-start px-6 pb-8 pt-28 sm:px-10 sm:py-24 lg:min-h-[760px] lg:items-center lg:px-12 lg:py-28">
           <div className="relative mx-auto max-w-[760px] text-center before:absolute before:inset-x-[-1.5rem] before:inset-y-[-1.25rem] before:-z-10 before:rounded-[2rem] before:bg-[#2b2a28]/18 before:blur-2xl lg:mx-0 lg:max-w-[780px] lg:-translate-y-6 lg:text-left lg:before:hidden">
-            <p className="hero-reveal text-[13px] font-black tracking-[0.14em] text-[#f1ece5] [animation-delay:300ms]">
+            <p className="hero-reveal text-[13px] font-black tracking-[0.14em] text-[#f1ece5] [animation-delay:450ms]">
               마음이 쉬어가는 따뜻한 진료 공간
             </p>
-            <h1 className="hero-reveal mx-auto mt-6 max-w-[9.5em] text-balance text-[2.45rem] font-extrabold leading-[1.14] tracking-tight text-[#fffcf7] [animation-delay:600ms] sm:text-6xl sm:leading-[1.1] lg:mx-0 lg:text-7xl lg:leading-[1.05]">
+            <h1 className="hero-reveal mx-auto mt-6 max-w-[8.8em] text-balance text-[2.45rem] font-extrabold leading-[1.22] tracking-tight text-[#fffcf7] [animation-delay:850ms] sm:text-6xl sm:leading-[1.18] lg:mx-0 lg:text-7xl lg:leading-[1.1]">
               당신의 마음에도
               <br />
               <span className="whitespace-nowrap">다시 봄이 올 수 있도록</span>
             </h1>
-            <div className="hero-reveal mx-auto mt-8 flex max-w-[420px] flex-col gap-3 [animation-delay:1000ms] sm:flex-row sm:justify-center lg:mx-0 lg:justify-start">
+            <div className="hero-reveal mx-auto mt-8 flex max-w-[420px] flex-col gap-3 [animation-delay:1350ms] sm:flex-row sm:justify-center lg:mx-0 lg:justify-start">
               <a
                 href="tel:031-000-0000"
-                className="flex min-h-14 items-center justify-center rounded-2xl border border-[#fffcf7]/70 bg-[#fffcf7] px-6 text-base font-black text-[#4b4741] shadow-[0_18px_40px_rgba(43,42,40,0.18)] transition active:scale-[0.98] hover:bg-[#f1ece5]"
+                className="flex min-h-14 items-center justify-center rounded-2xl border border-[#fffcf7]/70 bg-[#fffcf7] px-6 text-base font-black text-[#4b4741] shadow-[0_12px_28px_rgba(43,42,40,0.12)] transition active:scale-[0.98] hover:bg-[#f1ece5]"
               >
                 전화로 상담 문의하기
               </a>
               <a
                 href="#hours"
-                className="flex min-h-14 items-center justify-center rounded-2xl border border-[#fffcf7]/60 bg-[#2b2a28]/24 px-6 text-base font-black text-[#fffcf7] shadow-[0_18px_40px_rgba(43,42,40,0.12)] transition active:scale-[0.98] hover:bg-[#2b2a28]/34"
+                className="flex min-h-14 items-center justify-center rounded-2xl border border-[#fffcf7]/60 bg-[#2b2a28]/24 px-6 text-base font-black text-[#fffcf7] shadow-[0_12px_28px_rgba(43,42,40,0.08)] transition active:scale-[0.98] hover:bg-[#2b2a28]/34"
               >
                 운영시간 확인하기
               </a>

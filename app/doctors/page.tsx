@@ -47,38 +47,14 @@ export default function DoctorsPage() {
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
-          {doctors.map((doctor) => (
-            <article
-              key={doctor.id}
-              className="overflow-hidden rounded-3xl border border-[#e5ddd4] bg-[#fffcf7] shadow-[0_18px_42px_rgba(73,64,55,0.06)]"
-            >
-              <div className="relative aspect-[3/4] overflow-hidden bg-[#ede9e3]">
-                <Image
-                  src={doctor.imageSrc}
-                  alt={`${doctor.name} ${doctor.title}`}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover object-top"
-                />
-              </div>
-
-              <div className="p-7 sm:p-9">
-                <p className="text-[13px] font-black tracking-[0.08em] text-[#8a8073]">
-                  {doctor.title}
-                </p>
-                <h2 className="mt-1.5 text-[1.65rem] font-black tracking-tight sm:text-[1.85rem]">
-                  {doctor.name}
-                </h2>
-
-                <div className="my-6 h-px bg-[#e5ddd4]" />
-
-                <p className="whitespace-pre-line text-[0.95rem] leading-[2] text-[#7b756c]">
-                  {doctor.description}
-                </p>
-              </div>
-            </article>
-          ))}
+        <div className="mx-auto mt-10 w-full max-w-[680px] sm:mt-12">
+          <Image
+            src="/images/doctors/main-doctor-profile.png"
+            alt="남유림 원장"
+            width={1200}
+            height={800}
+            className="w-full rounded-2xl object-contain"
+          />
         </div>
       </section>
 

@@ -4,9 +4,9 @@ import { notices } from "@/lib/notices";
 
 export default function NoticeSection() {
   return (
-    <section className="bg-[#f8f5f1] py-10 sm:py-16 lg:py-20">
+    <section className="bg-[#f8f5f1] pb-10 pt-4 sm:pb-16 sm:pt-8 lg:pb-20 lg:pt-10">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
-        <div className="relative overflow-hidden rounded-[1.35rem] border border-[#e3dbd1] bg-[#f1ece5] px-6 py-10 shadow-[0_18px_46px_rgba(73,64,55,0.04)] sm:px-10 sm:py-14 lg:px-14 lg:py-16">
+        <div className="relative overflow-hidden rounded-[1.35rem] border border-[#e3dbd1] bg-[#f1ece5] px-6 py-8 shadow-[0_18px_46px_rgba(73,64,55,0.04)] sm:px-10 sm:py-12 lg:px-14 lg:py-16">
           <Image
             src="/images/ui/bamboo-shadow.png"
             alt=""
@@ -16,7 +16,7 @@ export default function NoticeSection() {
             className="pointer-events-none absolute right-[-12%] top-[0%] hidden h-[32rem] w-auto select-none opacity-[0.55] sm:block lg:right-[-6%] lg:h-[44rem]"
           />
 
-          <div className="relative grid grid-cols-1 gap-9 lg:grid-cols-[0.34fr_0.66fr] lg:items-stretch lg:gap-14">
+          <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-[0.34fr_0.66fr] lg:items-stretch lg:gap-14">
             <div className="lg:border-r lg:border-[#d6ccbf] lg:pr-12">
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#8a8073]">
                 Notice
