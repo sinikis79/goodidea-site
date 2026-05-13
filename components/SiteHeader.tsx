@@ -23,9 +23,25 @@ const allNavItems = [...primaryNavItems, ...secondaryNavItems];
 
 export default function SiteHeader() {
   const pathname = usePathname();
+  const [hasScrolled, setHasScrolled] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreButtonRef = useRef<HTMLButtonElement>(null);
   const morePanelRef = useRef<HTMLDivElement>(null);
+
+  const isActivePath = (href: string) => {
+    if (href.startsWith("/#")) return false;
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+  const anySecondaryActive = secondaryNavItems.some((item) => isActivePath(item.href));
+
+  useEffect(() => {
+    function onScroll() {
+      setHasScrolled(window.scrollY > 8);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     setMoreOpen(false);
@@ -43,10 +59,10 @@ export default function SiteHeader() {
     if (!moreOpen) return;
     function onPointerDown(e: PointerEvent) {
       const target = e.target as Node;
-      const inButton = moreButtonRef.current?.contains(target);
-      const inPanel = morePanelRef.current?.contains(target);
-      console.log("[더보기 outside pointerdown] inButton:", inButton, "inPanel:", inPanel, "target:", target);
-      if (inButton || inPanel) {
+      if (
+        moreButtonRef.current?.contains(target) ||
+        morePanelRef.current?.contains(target)
+      ) {
         return;
       }
       setMoreOpen(false);
@@ -63,7 +79,13 @@ export default function SiteHeader() {
   }, [moreOpen]);
 
   return (
-    <header className="relative sticky top-0 z-[100] border-b border-[#e5ddd4] bg-[#fffcf7]/95 backdrop-blur pointer-events-auto">
+    <header
+      className={`sticky top-0 z-[60] border-b backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-300 ease-out pointer-events-auto ${
+        hasScrolled
+          ? "bg-[#f8f5ee]/95 border-[#e7e1d5] shadow-[0_4px_18px_rgba(43,42,40,0.04)]"
+          : "bg-[#f8f5ee]/75 border-transparent shadow-none"
+      }`}
+    >
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:px-8">
         <Link
           href="/"
@@ -93,12 +115,16 @@ export default function SiteHeader() {
           />
         </Link>
 
-        <div className="hidden items-center gap-6 text-sm font-bold text-[#7b756c] lg:flex">
+        <div className="hidden items-center gap-6 text-sm font-bold lg:flex">
           {primaryNavItems.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="transition hover:text-[#2b2a28]"
+              className={`transition ${
+                isActivePath(item.href)
+                  ? "text-[#2b2a28]"
+                  : "text-[#7b786f] hover:text-[#2b2a28]"
+              }`}
             >
               {item.label}
             </Link>
@@ -107,18 +133,15 @@ export default function SiteHeader() {
             <button
               ref={moreButtonRef}
               type="button"
-              onPointerDown={(e) => {
-                e.stopPropagation();
-                const el = document.elementFromPoint(e.clientX, e.clientY);
-                console.log("[더보기 pointerdown] target:", e.target, "elementFromPoint:", el);
-              }}
-              onClick={(e) => {
-                console.log("[더보기 clicked] moreOpen:", moreOpen, "target:", e.target, "currentTarget:", e.currentTarget);
-                setMoreOpen((v) => !v);
-              }}
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={() => setMoreOpen((v) => !v)}
               aria-expanded={moreOpen}
               aria-haspopup="true"
-              className={`relative z-[120] cursor-pointer bg-transparent p-0 font-bold transition pointer-events-auto ${moreOpen ? "text-[#2b2a28]" : "hover:text-[#2b2a28]"}`}
+              className={`cursor-pointer bg-transparent p-0 text-sm font-bold transition pointer-events-auto ${
+                moreOpen || anySecondaryActive
+                  ? "text-[#2b2a28]"
+                  : "text-[#7b786f] hover:text-[#2b2a28]"
+              }`}
             >
               더보기
             </button>
@@ -132,7 +155,11 @@ export default function SiteHeader() {
                     key={item.label}
                     href={item.href}
                     onClick={() => setMoreOpen(false)}
-                    className="block rounded-xl px-4 py-2.5 text-sm font-extrabold text-[#2b2a28] transition hover:bg-[#f1ece5]"
+                    className={`block rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+                      isActivePath(item.href)
+                        ? "bg-[#f3eee5] text-[#2b2a28]"
+                        : "text-[#7b786f] hover:bg-[#f1ece5] hover:text-[#2b2a28]"
+                    }`}
                   >
                     {item.label}
                   </Link>

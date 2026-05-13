@@ -19,6 +19,12 @@ export default function MobileMenu({ items }: MobileMenuProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
+  const isActivePath = (href: string) => {
+    if (href.startsWith("/#")) return false;
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
@@ -79,14 +85,18 @@ export default function MobileMenu({ items }: MobileMenuProps) {
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute right-0 top-14 z-[90] w-52 overflow-hidden rounded-3xl border border-[#e5ddd4] bg-[#fffcf7] p-2 shadow-[0_18px_50px_rgba(73,64,55,0.13)]"
+          className="absolute right-0 top-14 z-[90] w-52 overflow-hidden rounded-3xl border border-[#e6ded0] bg-[#fbf7ef]/95 px-1.5 py-1.5 shadow-[0_16px_40px_rgba(43,42,40,0.08)] backdrop-blur-md"
         >
           {items.map((item) => (
             <Link
               key={item.label}
               href={item.href}
               onClick={() => setIsOpen(false)}
-              className="block rounded-2xl px-4 py-3 text-base font-extrabold text-[#2b2a28] transition hover:bg-[#f1ece5]"
+              className={`flex items-center justify-between rounded-2xl px-4 py-3.5 text-[15px] font-bold tracking-[-0.01em] transition ${
+                isActivePath(item.href)
+                  ? "bg-[#f3eee5] text-[#2b2a28]"
+                  : "text-[#7b786f] hover:bg-[#f3eee5] hover:text-[#2b2a28] active:bg-[#eee7dc]"
+              }`}
             >
               {item.label}
             </Link>
