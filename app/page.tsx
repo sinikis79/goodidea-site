@@ -1,13 +1,8 @@
 import Image from "next/image";
 import BottomNav from "@/components/BottomNav";
+import SiteHeader from "@/components/SiteHeader";
 import QuickLinksSection from "@/components/QuickLinksSection";
-
-const menuItems = [
-  { label: "소개", href: "#about" },
-  { label: "서비스", href: "#services" },
-  { label: "운영시간", href: "#hours" },
-  { label: "오시는 길", href: "#location" },
-];
+import NoticeSection from "@/components/NoticeSection";
 
 
 const services = [
@@ -72,65 +67,7 @@ const hours = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
-      <header className="sticky top-0 z-40 border-b border-[#e5ddd4] bg-[#fffcf7]/95 backdrop-blur">
-        <nav className="mx-auto flex max-w-[1400px] items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:px-8">
-          <a
-            href="#"
-            className="flex h-[70px] max-w-[calc(100vw-76px)] shrink-0 items-center gap-2"
-          >
-            <Image
-              src="/images/common/logo-symbol.png"
-              alt=""
-              width={160}
-              height={160}
-              priority
-              className="h-[48px] w-[48px] shrink-0 object-contain"
-            />
-            <Image
-              src="/images/common/logo-wordmark.png"
-              alt="판교다시봄정신건강의학과"
-              width={760}
-              height={180}
-              priority
-              className="h-[50px] w-[330px] max-w-[calc(100vw-120px)] object-contain object-left sm:w-[360px]"
-            />
-          </a>
-
-          <div className="hidden items-center gap-7 text-sm font-bold text-[#7b756c] lg:flex">
-            {menuItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="transition hover:text-[#2b2a28]"
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
-
-          <details className="group relative">
-            <summary className="flex h-12 w-12 cursor-pointer list-none items-center justify-center rounded-full border border-[#e5ddd4] bg-[#fffcf7] shadow-[0_14px_36px_rgba(73,64,55,0.08)] transition active:scale-[0.98] hover:border-[#cfc3b5] [&::-webkit-details-marker]:hidden">
-              <span className="sr-only">메뉴 열기</span>
-              <span className="flex flex-col gap-1.5">
-                <span className="h-0.5 w-6 rounded-full bg-[#2b2a28]" />
-                <span className="h-0.5 w-6 rounded-full bg-[#2b2a28]" />
-                <span className="h-0.5 w-6 rounded-full bg-[#2b2a28]" />
-              </span>
-            </summary>
-            <div className="absolute right-0 top-14 w-52 overflow-hidden rounded-3xl border border-[#e5ddd4] bg-[#fffcf7] p-2 shadow-[0_18px_50px_rgba(73,64,55,0.13)]">
-              {menuItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="block rounded-2xl px-4 py-3 text-base font-extrabold text-[#2b2a28] transition hover:bg-[#f1ece5]"
-                >
-                  {item.label}
-                </a>
-              ))}
-            </div>
-          </details>
-        </nav>
-      </header>
+      <SiteHeader />
 
       <section className="relative isolate overflow-hidden bg-[#f8f5f1]">
         <style>
@@ -207,6 +144,7 @@ export default function Home() {
       </section>
 
       <QuickLinksSection />
+      <NoticeSection />
 
       <section
         id="about"
