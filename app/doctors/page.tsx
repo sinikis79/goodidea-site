@@ -48,12 +48,52 @@ export default function DoctorsPage() {
         </div>
 
         <div className="mx-auto mt-10 w-full max-w-[680px] sm:mt-12">
+          <style>
+            {`
+              @keyframes doctor-photo-reveal {
+                0% {
+                  opacity: 0;
+                  filter: brightness(0.88);
+                  transform: translateY(12px);
+                }
+                40% {
+                  opacity: 0.45;
+                  filter: brightness(0.93);
+                }
+                70% {
+                  opacity: 0.78;
+                  filter: brightness(0.97);
+                }
+                100% {
+                  opacity: 1;
+                  filter: brightness(1);
+                  transform: translateY(0);
+                }
+              }
+
+              .doctor-photo-reveal {
+                opacity: 0;
+                filter: brightness(0.88);
+                transform: translateY(12px);
+                animation: doctor-photo-reveal 2000ms cubic-bezier(0.25, 0.1, 0.25, 1) 320ms forwards;
+              }
+
+              @media (prefers-reduced-motion: reduce) {
+                .doctor-photo-reveal {
+                  opacity: 1;
+                  filter: brightness(1);
+                  transform: none;
+                  animation: none;
+                }
+              }
+            `}
+          </style>
           <Image
             src="/images/doctors/main-doctor-profile.png"
             alt="남유림 원장"
             width={1200}
             height={800}
-            className="w-full rounded-2xl object-contain"
+            className="doctor-photo-reveal w-full rounded-2xl object-contain"
           />
         </div>
       </section>

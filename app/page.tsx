@@ -123,10 +123,10 @@ export default function Home() {
 
         <div className="mx-auto flex min-h-[520px] max-w-[1400px] items-center justify-center px-6 pb-20 pt-16 sm:min-h-[640px] sm:px-10 sm:py-24 lg:min-h-[720px] lg:px-12">
           <div className="relative mx-auto max-w-[860px] text-center">
-            <p className="hero-reveal text-[0.72rem] font-black tracking-[0.18em] text-[#d9dcc8] [animation-delay:420ms]">
+            <p className="hero-reveal text-[0.84rem] font-black tracking-[0.14em] text-[#e3e4d2] [animation-delay:420ms]">
               마음이 쉬어가는 따뜻한 진료 공간
             </p>
-            <h1 className="mx-auto mt-5 max-w-[10.5em] text-balance text-[1.86rem] font-extrabold leading-[1.28] tracking-normal text-[#fffaf2] sm:mt-7 sm:text-[2.95rem] sm:leading-[1.22] lg:text-[4rem] lg:leading-[1.16]">
+            <h1 className="mx-auto mt-5 max-w-[10.5em] text-balance text-[1.86rem] font-extrabold leading-[1.28] tracking-[0.01em] text-[#fffaf2] sm:mt-7 sm:text-[2.95rem] sm:leading-[1.22] lg:text-[4rem] lg:leading-[1.16]">
               <TypingText
                 text={"당신의 마음에도\n다시 봄이 올 수 있도록"}
                 charDelayMs={120}
@@ -149,6 +149,49 @@ export default function Home() {
               </a>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section
+        aria-label="판교다시봄정신건강의학과 브랜드 구분 영역"
+        className="bg-[#f8f5f1] px-6 pb-9 pt-8 sm:px-10 sm:pb-11 sm:pt-10"
+      >
+        <style>
+          {`
+            @keyframes brand-divider-reveal {
+              from {
+                opacity: 0;
+                transform: translateY(4px);
+              }
+              to {
+                opacity: 0.5;
+                transform: translateY(0);
+              }
+            }
+
+            .brand-divider-logo {
+              opacity: 0;
+              transform: translateY(4px);
+              animation: brand-divider-reveal 1100ms ease-out 4400ms forwards;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+              .brand-divider-logo {
+                opacity: 0.5;
+                transform: none;
+                animation: none;
+              }
+            }
+          `}
+        </style>
+        <div className="mx-auto flex max-w-[1400px] justify-center">
+          <Image
+            src="/images/common/logo-wordmark.png"
+            alt="판교다시봄정신건강의학과"
+            width={760}
+            height={180}
+            className="brand-divider-logo h-auto w-[280px] opacity-50 sm:w-[360px]"
+          />
         </div>
       </section>
 
