@@ -1,4 +1,5 @@
 import Image from "next/image";
+import TypingText from "@/components/TypingText";
 import BottomNav from "@/components/BottomNav";
 import SiteHeader from "@/components/SiteHeader";
 import QuickLinksSection from "@/components/QuickLinksSection";
@@ -69,7 +70,7 @@ export default function Home() {
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
       <SiteHeader />
 
-      <section className="relative isolate overflow-hidden bg-[#f8f5f1]">
+      <section className="relative isolate overflow-hidden bg-[#171812] text-[#fffcf7]">
         <style>
           {`
             @keyframes hero-soft-reveal {
@@ -103,38 +104,46 @@ export default function Home() {
             }
           `}
         </style>
-        <Image
-          src="/images/hero/clinic-entrance.jpg"
-          alt="판교다시봄정신건강의학과 공간"
-          fill
-          priority
-          sizes="100vw"
-          className="absolute inset-0 -z-20 h-full w-full object-cover object-[52%_42%] lg:object-center"
-        />
-        <div className="absolute inset-0 -z-10 bg-[#2b2a28]/10" />
-        <div className="absolute inset-x-0 bottom-0 -z-10 h-[54%] bg-gradient-to-t from-[#f8f5f1]/88 via-[#f8f5f1]/28 to-transparent" />
-        <div className="absolute inset-x-[-10%] bottom-[-3rem] -z-10 h-28 bg-[#f8f5f1] blur-2xl" />
+        <video
+          aria-hidden="true"
+          autoPlay
+          className="absolute inset-0 -z-20 h-full w-full object-cover object-[52%_45%] lg:object-center"
+          loop
+          muted
+          playsInline
+        >
+          <source src="/videos/hero-video.mp4" type="video/mp4" />
+        </video>
 
-        <div className="mx-auto flex min-h-[590px] max-w-[1400px] items-start px-6 pb-8 pt-28 sm:px-10 sm:py-24 lg:min-h-[760px] lg:items-center lg:px-12 lg:py-28">
-          <div className="relative mx-auto max-w-[760px] text-center before:absolute before:inset-x-[-1.5rem] before:inset-y-[-1.25rem] before:-z-10 before:rounded-[2rem] before:bg-[#2b2a28]/18 before:blur-2xl lg:mx-0 lg:max-w-[780px] lg:-translate-y-6 lg:text-left lg:before:hidden">
-            <p className="hero-reveal text-[13px] font-black tracking-[0.14em] text-[#f1ece5] [animation-delay:450ms]">
+        <div className="absolute inset-0 -z-10 bg-[#15140f]/24" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_18%,rgba(255,244,220,0.15),transparent_32%),radial-gradient(ellipse_at_50%_0%,rgba(255,250,235,0.09),transparent_50%),radial-gradient(circle_at_50%_42%,rgba(248,245,241,0.08),transparent_34%),linear-gradient(to_bottom,rgba(23,24,18,0.08),rgba(23,24,18,0.30)_58%,rgba(248,245,241,0.55)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(122deg,transparent_4%,transparent_48%,rgba(255,226,184,0.06)_66%,rgba(218,156,88,0.03)_82%,transparent_100%)] opacity-60" />
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-[34%] bg-gradient-to-t from-[#f8f5f1] via-[#f8f5f1]/55 to-transparent" />
+        <div className="absolute inset-x-[-10%] bottom-[-3.25rem] -z-10 h-28 bg-[#f8f5f1] blur-2xl" />
+
+        <div className="mx-auto flex min-h-[520px] max-w-[1400px] items-center justify-center px-6 pb-20 pt-16 sm:min-h-[640px] sm:px-10 sm:py-24 lg:min-h-[720px] lg:px-12">
+          <div className="relative mx-auto max-w-[860px] text-center">
+            <p className="hero-reveal text-[0.72rem] font-black tracking-[0.18em] text-[#d9dcc8] [animation-delay:420ms]">
               마음이 쉬어가는 따뜻한 진료 공간
             </p>
-            <h1 className="hero-reveal mx-auto mt-6 max-w-[8.8em] text-balance text-[2.45rem] font-extrabold leading-[1.22] tracking-tight text-[#fffcf7] [animation-delay:850ms] sm:text-6xl sm:leading-[1.18] lg:mx-0 lg:text-7xl lg:leading-[1.1]">
-              당신의 마음에도
-              <br />
-              <span className="whitespace-nowrap">다시 봄이 올 수 있도록</span>
+            <h1 className="mx-auto mt-5 max-w-[10.5em] text-balance text-[1.86rem] font-extrabold leading-[1.28] tracking-normal text-[#fffaf2] sm:mt-7 sm:text-[2.95rem] sm:leading-[1.22] lg:text-[4rem] lg:leading-[1.16]">
+              <TypingText
+                text={"당신의 마음에도\n다시 봄이 올 수 있도록"}
+                charDelayMs={120}
+                startDelayMs={640}
+                lineBreakPauseMs={560}
+              />
             </h1>
-            <div className="hero-reveal mx-auto mt-8 flex max-w-[420px] flex-col gap-3 [animation-delay:1350ms] sm:flex-row sm:justify-center lg:mx-0 lg:justify-start">
+            <div className="hero-reveal mx-auto mt-7 flex max-w-[310px] flex-col gap-2.5 [animation-delay:1500ms] sm:max-w-none sm:flex-row sm:justify-center">
               <a
                 href="tel:031-000-0000"
-                className="flex min-h-14 items-center justify-center rounded-2xl border border-[#fffcf7]/70 bg-[#fffcf7] px-6 text-base font-black text-[#4b4741] shadow-[0_12px_28px_rgba(43,42,40,0.12)] transition active:scale-[0.98] hover:bg-[#f1ece5]"
+                className="flex min-h-11 items-center justify-center rounded-xl border border-[#fff7ec]/70 bg-[#fffaf2]/90 px-4 text-[0.86rem] font-black text-[#4b4741] shadow-[0_5px_12px_rgba(23,24,18,0.055)] transition active:scale-[0.98] hover:bg-[#fffcf7] sm:min-w-[140px]"
               >
                 전화로 상담 문의하기
               </a>
               <a
                 href="#hours"
-                className="flex min-h-14 items-center justify-center rounded-2xl border border-[#fffcf7]/60 bg-[#2b2a28]/24 px-6 text-base font-black text-[#fffcf7] shadow-[0_12px_28px_rgba(43,42,40,0.08)] transition active:scale-[0.98] hover:bg-[#2b2a28]/34"
+                className="flex min-h-11 items-center justify-center rounded-xl border border-[#fffaf2]/42 bg-[#fffaf2]/9 px-4 text-[0.86rem] font-black text-[#fffaf2] shadow-[0_5px_12px_rgba(23,24,18,0.045)] backdrop-blur-[2px] transition active:scale-[0.98] hover:bg-[#fffaf2]/14 sm:min-w-[140px]"
               >
                 운영시간 확인하기
               </a>
