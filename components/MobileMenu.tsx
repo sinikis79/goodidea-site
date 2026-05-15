@@ -9,9 +9,23 @@ type MenuItem = {
   href: string;
 };
 
-type MobileMenuProps = {
+type MenuGroup = {
+  label: string;
   items: MenuItem[];
 };
+
+type MobileMenuItem = MenuItem | MenuGroup;
+
+type MobileMenuProps = {
+  items: MobileMenuItem[];
+};
+
+function isMenuGroup(item: MobileMenuItem): item is MenuGroup {
+  return "items" in item;
+}
+
+const isExternalHref = (href: string) =>
+  href.startsWith("http") || href.startsWith("tel:");
 
 export default function MobileMenu({ items }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +37,10 @@ export default function MobileMenu({ items }: MobileMenuProps) {
     if (href.startsWith("/#")) return false;
     if (href === "/") return pathname === "/";
     return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -48,11 +66,11 @@ export default function MobileMenu({ items }: MobileMenuProps) {
       ) {
         return;
       }
-      setIsOpen(false);
+      closeMenu();
     }
 
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setIsOpen(false);
+      if (e.key === "Escape") closeMenu();
     }
 
     document.addEventListener("pointerdown", handlePointerDown);
@@ -85,22 +103,68 @@ export default function MobileMenu({ items }: MobileMenuProps) {
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute right-0 top-14 z-[90] w-52 overflow-hidden rounded-3xl border border-[#e6ded0] bg-[#fbf7ef]/95 px-1.5 py-1.5 shadow-[0_16px_40px_rgba(43,42,40,0.08)] backdrop-blur-md"
+          className="absolute right-0 top-14 z-[90] w-[17rem] overflow-hidden rounded-3xl border border-[#e6ded0] bg-[#fbf7ef]/95 px-1.5 py-1.5 shadow-[0_16px_40px_rgba(43,42,40,0.08)] backdrop-blur-md"
         >
-          {items.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              onClick={() => setIsOpen(false)}
-              className={`flex items-center justify-between rounded-2xl px-4 py-3.5 text-[15px] font-bold tracking-[-0.01em] transition ${
-                isActivePath(item.href)
-                  ? "bg-[#f3eee5] text-[#2b2a28]"
-                  : "text-[#7b786f] hover:bg-[#f3eee5] hover:text-[#2b2a28] active:bg-[#eee7dc]"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {items.map((item) => {
+            if (isMenuGroup(item)) {
+              return (
+                <div key={item.label} className="border-b border-[#eadfd3]/70 px-2 py-3 last:border-b-0">
+                  <p className="rounded-2xl px-3 py-2.5 text-[15px] font-black tracking-normal text-[#8a5f42]">
+                    {item.label}
+                  </p>
+
+                  <div className="mt-1 space-y-0.5 pb-1">
+                    {item.items.map((child) => {
+                      const childClassName = `flex items-center justify-between rounded-xl px-3 py-2.5 text-[14px] font-semibold tracking-[-0.005em] transition ${
+                        isActivePath(child.href)
+                          ? "bg-[#f3eee5] text-[#3f3a34]"
+                          : "text-[#6f6a61] hover:bg-[#f3eee5] hover:text-[#2b2a28] active:bg-[#eee7dc]"
+                      }`;
+
+                      if (isExternalHref(child.href)) {
+                        return (
+                          <a
+                            key={child.label}
+                            href={child.href}
+                            onClick={closeMenu}
+                            className={childClassName}
+                          >
+                            {child.label}
+                          </a>
+                        );
+                      }
+
+                      return (
+                        <Link
+                          key={child.label}
+                          href={child.href}
+                          onClick={closeMenu}
+                          className={childClassName}
+                        >
+                          {child.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={closeMenu}
+                className={`mx-2 flex items-center justify-between rounded-2xl px-3 py-3 text-[15px] font-black tracking-normal transition ${
+                  isActivePath(item.href)
+                    ? "bg-[#f3eee5]/70 text-[#8a5f42]"
+                    : "text-[#8a5f42] hover:bg-[#f3eee5]/55 active:bg-[#eee7dc]"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>

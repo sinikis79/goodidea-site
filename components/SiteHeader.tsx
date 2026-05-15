@@ -1,39 +1,67 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "@/components/MobileMenu";
 
-const primaryNavItems = [
-  { label: "공지사항", href: "/notice" },
-  { label: "의료진 소개", href: "/doctors" },
-  { label: "진료과목", href: "/services" },
-  { label: "병원 소개", href: "/#about" },
+const KAKAO_CHANNEL_URL = "https://pf.kakao.com/_xxxxxx/chat";
+const PHONE_NUMBER = "tel:031-000-0000";
+const BLOG_URL = "#";
+
+const navGroups = [
+  {
+    key: "about",
+    label: "병원소개",
+    items: [
+      { label: "병원소개", href: "/#about" },
+      { label: "의료진 소개", href: "/doctors" },
+      { label: "병원 둘러보기", href: "/space" },
+    ],
+  },
+  {
+    key: "care",
+    label: "진료안내",
+    items: [
+      { label: "진료과목", href: "/#services" },
+      { label: "진료과정", href: "/care/process" },
+      { label: "검사항목", href: "/tests" },
+    ],
+  },
+  {
+    key: "reservation",
+    label: "예약하기",
+    items: [
+      { label: "카톡 예약하기", href: KAKAO_CHANNEL_URL },
+      { label: "전화 예약", href: PHONE_NUMBER },
+    ],
+  },
+];
+
+const standaloneNavItems = [
+  { label: "공지/휴무안내", href: "/notice" },
+  { label: "블로그", href: BLOG_URL },
   { label: "오시는 길", href: "/#location" },
 ];
 
-const secondaryNavItems = [
-  { label: "진료과정", href: "/care" },
-  { label: "병원 둘러보기", href: "/space" },
-  { label: "검사항목", href: "/tests" },
-];
+const mobileNavItems = [...navGroups, ...standaloneNavItems];
 
-const allNavItems = [...primaryNavItems, ...secondaryNavItems];
+const isExternalHref = (href: string) =>
+  href.startsWith("http") || href.startsWith("tel:");
 
 export default function SiteHeader() {
   const pathname = usePathname();
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreButtonRef = useRef<HTMLButtonElement>(null);
-  const morePanelRef = useRef<HTMLDivElement>(null);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   const isActivePath = (href: string) => {
     if (href.startsWith("/#")) return false;
     if (href === "/") return pathname === "/";
     return pathname === href || pathname.startsWith(`${href}/`);
   };
-  const anySecondaryActive = secondaryNavItems.some((item) => isActivePath(item.href));
+
+  const isGroupActive = (items: { href: string }[]) =>
+    items.some((item) => isActivePath(item.href));
 
   useEffect(() => {
     function onScroll() {
@@ -42,41 +70,6 @@ export default function SiteHeader() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    setMoreOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    function onPageShow(e: PageTransitionEvent) {
-      if (e.persisted) setMoreOpen(false);
-    }
-    window.addEventListener("pageshow", onPageShow);
-    return () => window.removeEventListener("pageshow", onPageShow);
-  }, []);
-
-  useEffect(() => {
-    if (!moreOpen) return;
-    function onPointerDown(e: PointerEvent) {
-      const target = e.target as Node;
-      if (
-        moreButtonRef.current?.contains(target) ||
-        morePanelRef.current?.contains(target)
-      ) {
-        return;
-      }
-      setMoreOpen(false);
-    }
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setMoreOpen(false);
-    }
-    document.addEventListener("pointerdown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [moreOpen]);
 
   return (
     <header
@@ -115,11 +108,84 @@ export default function SiteHeader() {
           />
         </Link>
 
-        <div className="hidden items-center gap-6 text-sm font-bold lg:flex">
-          {primaryNavItems.map((item) => (
+        <div
+          className="hidden items-center gap-7 text-sm font-bold lg:flex"
+          onMouseLeave={() => setActiveMenu(null)}
+        >
+          {navGroups.map((group) => (
+            <div
+              key={group.label}
+              className="relative py-3"
+              onMouseEnter={() => setActiveMenu(group.key)}
+              onFocusCapture={() => setActiveMenu(group.key)}
+              onBlurCapture={(event) => {
+                const nextTarget = event.relatedTarget as Node | null;
+                if (!nextTarget || !event.currentTarget.contains(nextTarget)) {
+                  setActiveMenu(null);
+                }
+              }}
+            >
+              <button
+                type="button"
+                aria-haspopup="true"
+                aria-expanded={activeMenu === group.key}
+                className={`cursor-default bg-transparent p-0 text-sm font-bold transition ${
+                  activeMenu === group.key || isGroupActive(group.items)
+                    ? "text-[#2b2a28]"
+                    : "text-[#7b786f] hover:text-[#2b2a28] focus:text-[#2b2a28]"
+                }`}
+              >
+                {group.label}
+              </button>
+              <div
+                className={`absolute left-1/2 top-10 z-50 w-48 -translate-x-1/2 rounded-2xl border border-[#e5ddd4] bg-[#fffcf7]/98 p-1.5 shadow-[0_18px_48px_rgba(73,64,55,0.10)] transition duration-200 ease-out ${
+                  activeMenu === group.key
+                    ? "visible pointer-events-auto translate-y-0 opacity-100"
+                    : "invisible pointer-events-none translate-y-1 opacity-0"
+                }`}
+              >
+                {group.items.map((item) => {
+                  const itemClassName = `block rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+                    isActivePath(item.href)
+                      ? "bg-[#f3eee5] text-[#2b2a28]"
+                      : "text-[#7b786f] hover:bg-[#f1ece5] hover:text-[#2b2a28] focus:bg-[#f1ece5] focus:text-[#2b2a28]"
+                  }`;
+
+                  if (isExternalHref(item.href)) {
+                    return (
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        onClick={() => setActiveMenu(null)}
+                        className={itemClassName}
+                      >
+                        {item.label}
+                      </a>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setActiveMenu(null)}
+                      className={itemClassName}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+
+          {standaloneNavItems.map((item) => (
             <Link
               key={item.label}
               href={item.href}
+              onMouseEnter={() => setActiveMenu(null)}
+              onFocus={() => setActiveMenu(null)}
+              onClick={() => setActiveMenu(null)}
               className={`transition ${
                 isActivePath(item.href)
                   ? "text-[#2b2a28]"
@@ -129,48 +195,10 @@ export default function SiteHeader() {
               {item.label}
             </Link>
           ))}
-          <div className="relative">
-            <button
-              ref={moreButtonRef}
-              type="button"
-              onPointerDown={(e) => e.stopPropagation()}
-              onClick={() => setMoreOpen((v) => !v)}
-              aria-expanded={moreOpen}
-              aria-haspopup="true"
-              className={`cursor-pointer bg-transparent p-0 text-sm font-bold transition pointer-events-auto ${
-                moreOpen || anySecondaryActive
-                  ? "text-[#2b2a28]"
-                  : "text-[#7b786f] hover:text-[#2b2a28]"
-              }`}
-            >
-              더보기
-            </button>
-            {moreOpen && (
-              <div
-                ref={morePanelRef}
-                className="absolute right-0 top-8 w-44 overflow-hidden rounded-2xl border border-[#e5ddd4] bg-[#fffcf7] p-1.5 shadow-[0_18px_50px_rgba(73,64,55,0.13)]"
-              >
-                {secondaryNavItems.map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    onClick={() => setMoreOpen(false)}
-                    className={`block rounded-xl px-4 py-2.5 text-sm font-bold transition ${
-                      isActivePath(item.href)
-                        ? "bg-[#f3eee5] text-[#2b2a28]"
-                        : "text-[#7b786f] hover:bg-[#f1ece5] hover:text-[#2b2a28]"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
 
         <div className="lg:hidden">
-          <MobileMenu key={pathname} items={allNavItems} />
+          <MobileMenu key={pathname} items={mobileNavItems} />
         </div>
       </nav>
     </header>
