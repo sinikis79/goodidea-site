@@ -16,7 +16,7 @@ const navGroups = [
     items: [
       { label: "병원소개", href: "/#about" },
       { label: "의료진 소개", href: "/doctors" },
-      { label: "병원 둘러보기", href: "/space" },
+      { label: "병원 둘러보기", href: "/#interior" },
     ],
   },
   {

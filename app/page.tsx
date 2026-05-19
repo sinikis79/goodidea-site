@@ -3,6 +3,7 @@ import TypingText from "@/components/TypingText";
 import BottomNav from "@/components/BottomNav";
 import SiteHeader from "@/components/SiteHeader";
 import QuickLinksSection from "@/components/QuickLinksSection";
+import InteriorPreviewSection from "@/components/InteriorPreviewSection";
 import NoticeSection from "@/components/NoticeSection";
 
 
@@ -196,6 +197,7 @@ export default function Home() {
       </section>
 
       <QuickLinksSection />
+      <InteriorPreviewSection />
       <NoticeSection />
 
       <section

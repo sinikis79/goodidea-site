@@ -18,10 +18,10 @@ const quickLinks = [
     icon: "clock",
   },
   {
-    title: "상담 안내",
-    description: "처음 방문하는 분을 위한 흐름입니다.",
-    href: "#services",
-    icon: "chat",
+    title: "블로그",
+    description: "병원 소식과 이야기를 확인하세요.",
+    href: "#",
+    icon: "news",
   },
 ];
 
@@ -38,7 +38,7 @@ function QuickIcon({ name }: { name: string }) {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className="h-8 w-8 text-[#6a7059]"
+      className="h-6 w-6 sm:h-8 sm:w-8"
     >
       {name === "phone" && (
         <path
@@ -61,11 +61,14 @@ function QuickIcon({ name }: { name: string }) {
           <path {...common} d="M12 7.5V12l3.2 2" />
         </>
       )}
-      {name === "chat" && (
-        <path
-          {...common}
-          d="M21 11.5a8.4 8.4 0 0 1-9 8.35 8.8 8.8 0 0 1-3.6-.95L3 20l1.35-4.55A8.2 8.2 0 0 1 3 11.5a8.5 8.5 0 0 1 18 0Z"
-        />
+      {name === "news" && (
+        <>
+          <path
+            {...common}
+            d="M5 4.5h11.5A2.5 2.5 0 0 1 19 7v12.5H7.5A2.5 2.5 0 0 1 5 17V4.5Z"
+          />
+          <path {...common} d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" />
+        </>
       )}
     </svg>
   );
@@ -73,7 +76,7 @@ function QuickIcon({ name }: { name: string }) {
 
 export default function QuickLinksSection() {
   return (
-    <section className="mx-auto max-w-[1400px] px-5 pb-8 pt-6 sm:px-8 sm:pb-14 sm:pt-10 lg:pb-16 lg:pt-12">
+    <section className="mx-auto max-w-[1400px] px-5 pb-6 pt-4 sm:px-8 sm:pb-14 sm:pt-10 lg:pb-16 lg:pt-12">
       <style>{`
         @keyframes ql-reveal {
           from { opacity: 0; transform: translateY(20px); }
@@ -86,7 +89,7 @@ export default function QuickLinksSection() {
           .ql-card { animation: none; }
         }
       `}</style>
-      <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-6">
         {quickLinks.map((item, index) => (
           <div
             key={item.title}
@@ -95,13 +98,21 @@ export default function QuickLinksSection() {
           >
             <a
               href={item.href}
-              className="group flex h-full min-h-[154px] flex-col rounded-2xl border border-[#e6ded4] bg-[#fffcf7]/92 p-5 shadow-[0_12px_34px_rgba(73,64,55,0.035)] transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-[#d8cec2] hover:shadow-[0_16px_38px_rgba(73,64,55,0.06)] active:scale-[0.99] sm:min-h-[184px] sm:p-6"
+              className="group flex h-full min-h-[128px] flex-col items-center justify-center rounded-2xl border border-[#e6ded4] bg-[#fffaf2]/95 p-4 text-center shadow-[0_10px_26px_rgba(73,64,55,0.022)] transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-[#d8cec2] hover:bg-[#fffcf7] hover:shadow-[0_16px_38px_rgba(73,64,55,0.05)] active:translate-y-[1px] active:scale-[0.995] sm:min-h-[184px] sm:items-start sm:justify-start sm:bg-[#fffcf7]/92 sm:p-6 sm:text-left sm:shadow-[0_12px_34px_rgba(73,64,55,0.035)]"
             >
-              <QuickIcon name={item.icon} />
-              <h2 className="mt-5 text-[1.35rem] font-black leading-[1.25] text-[#2b2a28]">{item.title}</h2>
-              <p className="mt-2.5 flex-1 text-base leading-7 text-[#7b756c]">{item.description}</p>
               <span
-                className="mt-3 self-end text-2xl leading-none text-[#4b4741] transition-transform duration-500 group-hover:translate-x-1"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#efe5d7] text-[#7b6047] transition-colors duration-500 group-hover:bg-[#f4eadc] sm:h-auto sm:w-auto sm:rounded-none sm:bg-transparent sm:text-[#6a7059] sm:group-hover:bg-transparent"
+              >
+                <QuickIcon name={item.icon} />
+              </span>
+              <h2 className="mt-2.5 text-[1rem] font-black leading-[1.25] text-[#2b2a28] sm:mt-5 sm:text-[1.35rem]">
+                {item.title}
+              </h2>
+              <p className="mt-2.5 hidden flex-1 text-base leading-7 text-[#7b756c] sm:block">
+                {item.description}
+              </p>
+              <span
+                className="mt-3 hidden self-end text-2xl leading-none text-[#4b4741] transition-transform duration-500 group-hover:translate-x-1 sm:block"
                 aria-hidden="true"
               >
                 →

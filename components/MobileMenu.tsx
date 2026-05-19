@@ -103,19 +103,19 @@ export default function MobileMenu({ items }: MobileMenuProps) {
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute right-0 top-14 z-[90] w-[17rem] overflow-hidden rounded-3xl border border-[#e6ded0] bg-[#fbf7ef]/95 px-1.5 py-1.5 shadow-[0_16px_40px_rgba(43,42,40,0.08)] backdrop-blur-md"
+          className="absolute right-0 top-14 z-[90] w-[17rem] overflow-hidden rounded-3xl border border-[#e6ded0] bg-[#fbf7ef]/95 px-1 py-1 shadow-[0_16px_40px_rgba(43,42,40,0.08)] backdrop-blur-md"
         >
           {items.map((item) => {
             if (isMenuGroup(item)) {
               return (
-                <div key={item.label} className="border-b border-[#eadfd3]/70 px-2 py-3 last:border-b-0">
-                  <p className="rounded-2xl px-3 py-2.5 text-[15px] font-black tracking-normal text-[#8a5f42]">
+                <div key={item.label} className="border-b border-[#eadfd3]/70 px-2 py-1.5 last:border-b-0">
+                  <p className="rounded-xl px-3 py-1.5 text-[15px] font-black tracking-normal text-[#8a5f42]">
                     {item.label}
                   </p>
 
-                  <div className="mt-1 space-y-0.5 pb-1">
+                  <div className="mt-0.5 space-y-0 pb-0.5">
                     {item.items.map((child) => {
-                      const childClassName = `flex items-center justify-between rounded-xl px-3 py-2.5 text-[14px] font-semibold tracking-[-0.005em] transition ${
+                      const childClassName = `flex items-center justify-between rounded-xl px-3 py-1.5 text-[14px] font-semibold tracking-[-0.005em] transition ${
                         isActivePath(child.href)
                           ? "bg-[#f3eee5] text-[#3f3a34]"
                           : "text-[#6f6a61] hover:bg-[#f3eee5] hover:text-[#2b2a28] active:bg-[#eee7dc]"
@@ -155,7 +155,7 @@ export default function MobileMenu({ items }: MobileMenuProps) {
                 key={item.label}
                 href={item.href}
                 onClick={closeMenu}
-                className={`mx-2 flex items-center justify-between rounded-2xl px-3 py-3 text-[15px] font-black tracking-normal transition ${
+                className={`mx-2 flex items-center justify-between rounded-xl px-3 py-1.5 text-[15px] font-black tracking-normal transition ${
                   isActivePath(item.href)
                     ? "bg-[#f3eee5]/70 text-[#8a5f42]"
                     : "text-[#8a5f42] hover:bg-[#f3eee5]/55 active:bg-[#eee7dc]"
