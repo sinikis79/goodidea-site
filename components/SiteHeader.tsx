@@ -82,7 +82,7 @@ export default function SiteHeader() {
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:px-8">
         <Link
           href="/"
-          aria-label="판교다시봄정신건강의학과 홈으로 이동"
+          aria-label="판교다시봄 정신건강의학과 홈으로 이동"
           className="relative z-[90] flex h-[70px] max-w-[calc(100vw-76px)] shrink-0 items-center gap-2 pointer-events-auto"
           onClick={() => {
             if (pathname === "/") {
@@ -100,7 +100,7 @@ export default function SiteHeader() {
           />
           <Image
             src="/images/common/logo-wordmark.png"
-            alt="판교다시봄정신건강의학과"
+            alt="판교다시봄 정신건강의학과"
             width={760}
             height={180}
             priority

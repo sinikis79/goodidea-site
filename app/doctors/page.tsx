@@ -1,35 +1,11 @@
 import Image from "next/image";
 import SiteHeader from "@/components/SiteHeader";
 import BottomNav from "@/components/BottomNav";
+import { getPublicDoctorImages } from "@/lib/doctors";
 
-const doctors = [
-  {
-    id: "doctor-1",
-    name: "오승영",
-    title: "원장",
-    imageSrc: "/images/doctors/doctor-1.jpg",
-    description: `정신건강의학과 전문의
+export default async function DoctorsPage() {
+  const doctors = await getPublicDoctorImages();
 
-경희대학교 의과대학 졸업
-경희대학교 의과대학원 졸업
-경희대학교병원 인턴 수료
-경희대학교병원 정신건강의학과 레지던트 수료`,
-  },
-  {
-    id: "doctor-2",
-    name: "나혜수",
-    title: "원장",
-    imageSrc: "/images/doctors/doctor-2.jpg",
-    description: `정신건강의학과 전문의
-
-한국과학기술원 졸업
-가천대학교 의학전문대학원 졸업
-가천대학교 길병원 인턴 수료
-가천대학교 길병원 정신건강의학과 레지던트 수료`,
-  },
-];
-
-export default function DoctorsPage() {
   return (
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
       <SiteHeader />
@@ -47,7 +23,7 @@ export default function DoctorsPage() {
           </p>
         </div>
 
-        <div className="mx-auto mt-10 w-full max-w-[680px] sm:mt-12">
+        <div className="mx-auto mt-10 w-full max-w-[1040px] sm:mt-12">
           <style>
             {`
               @keyframes doctor-photo-reveal {
@@ -88,13 +64,24 @@ export default function DoctorsPage() {
               }
             `}
           </style>
-          <Image
-            src="/images/doctors/main-doctor-profile.png"
-            alt="남유림 원장"
-            width={1200}
-            height={800}
-            className="doctor-photo-reveal w-full rounded-2xl object-contain"
-          />
+          <div
+            className={`grid gap-5 ${
+              doctors.length > 1 ? "sm:grid-cols-2" : "mx-auto max-w-[680px]"
+            }`}
+          >
+            {doctors.map((doctor, index) => (
+              <Image
+                key={doctor.id}
+                src={doctor.image_url}
+                alt={`판교다시봄 정신건강의학과 의료진 소개 ${index + 1}`}
+                width={1200}
+                height={1500}
+                unoptimized
+                className="doctor-photo-reveal w-full rounded-2xl object-contain"
+                style={{ animationDelay: `${320 + index * 120}ms` }}
+              />
+            ))}
+          </div>
         </div>
       </section>
 

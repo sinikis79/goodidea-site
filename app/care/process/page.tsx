@@ -58,8 +58,8 @@ function ProcessHero() {
   return (
     <section className="bg-[#f8f5f1] px-5 pb-8 pt-14 sm:px-8 sm:pb-12 sm:pt-20">
       <div className="mx-auto max-w-[1400px]">
-        <p className="text-[12px] font-black uppercase tracking-[0.16em] text-[#9a8069]">
-          Care Process
+        <p className="text-[13px] font-black tracking-[0.08em] text-[#8a8073]">
+          진료과정
         </p>
         <h1 className="mt-5 text-[2.15rem] font-black leading-[1.25] tracking-tight text-[#6f4329] sm:text-[3.2rem] sm:leading-[1.18] lg:text-[3.75rem]">
           진료과정

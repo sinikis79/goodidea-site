@@ -1,9 +1,24 @@
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import BottomNav from "@/components/BottomNav";
-import { notices } from "@/lib/notices";
+import { getPublicNoticePage } from "@/lib/notices";
 
-export default function NoticePage() {
+type NoticePageProps = {
+  searchParams?: Promise<{
+    page?: string;
+  }>;
+};
+
+export default async function NoticePage({ searchParams }: NoticePageProps) {
+  const params = await searchParams;
+  const currentPage = Number(params?.page ?? 1);
+  const { notices, page, totalPages } = await getPublicNoticePage(
+    currentPage,
+    12,
+  );
+  const hasPrevious = page > 1;
+  const hasNext = page < totalPages;
+
   return (
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
       <SiteHeader />
@@ -31,6 +46,39 @@ export default function NoticePage() {
             </Link>
           ))}
         </div>
+
+        {totalPages > 1 ? (
+          <nav
+            aria-label="공지사항 페이지 이동"
+            className="mt-10 flex items-center justify-center gap-3"
+          >
+            <Link
+              href={hasPrevious ? `/notice?page=${page - 1}` : "#"}
+              aria-disabled={!hasPrevious}
+              className={`inline-flex h-11 min-w-24 items-center justify-center rounded-xl border px-4 text-[13px] font-black transition ${
+                hasPrevious
+                  ? "border-[#d8cfc3] text-[#5f5146] hover:bg-[#f3eee5]"
+                  : "pointer-events-none border-[#ece4da] text-[#c7beb3]"
+              }`}
+            >
+              이전
+            </Link>
+            <span className="min-w-20 text-center text-[13px] font-black text-[#8a8073]">
+              {page} / {totalPages}
+            </span>
+            <Link
+              href={hasNext ? `/notice?page=${page + 1}` : "#"}
+              aria-disabled={!hasNext}
+              className={`inline-flex h-11 min-w-24 items-center justify-center rounded-xl border px-4 text-[13px] font-black transition ${
+                hasNext
+                  ? "border-[#d8cfc3] text-[#5f5146] hover:bg-[#f3eee5]"
+                  : "pointer-events-none border-[#ece4da] text-[#c7beb3]"
+              }`}
+            >
+              다음
+            </Link>
+          </nav>
+        ) : null}
       </section>
 
       <BottomNav />

@@ -3,11 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import BottomNav from "@/components/BottomNav";
-import { notices } from "@/lib/notices";
-
-export async function generateStaticParams() {
-  return notices.map((n) => ({ id: n.id }));
-}
+import { getPublicNoticeById } from "@/lib/notices";
 
 export default async function NoticeDetailPage({
   params,
@@ -15,7 +11,7 @@ export default async function NoticeDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const notice = notices.find((n) => n.id === id);
+  const notice = await getPublicNoticeById(id);
   if (!notice) notFound();
 
   return (
@@ -52,6 +48,7 @@ export default async function NoticeDetailPage({
                 alt={notice.title}
                 width={1200}
                 height={800}
+                unoptimized
                 className="h-auto w-full rounded-2xl border border-[#e5ddd4]"
               />
             </a>

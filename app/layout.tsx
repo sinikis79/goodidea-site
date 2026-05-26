@@ -17,17 +17,17 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "판교다시봄정신건강의학과",
-  description: "판교다시봄정신건강의학과 홈페이지입니다.",
+  title: "판교다시봄 정신건강의학과",
+  description: "판교다시봄 정신건강의학과 홈페이지입니다.",
   openGraph: {
-    title: "판교다시봄정신건강의학과",
+    title: "판교다시봄 정신건강의학과",
     description: "당신의 마음에도 다시 봄이 올 수 있도록",
     images: [
       {
         url: "/images/common/logo-horizontal.png",
         width: 2238,
         height: 608,
-        alt: "판교다시봄정신건강의학과",
+        alt: "판교다시봄 정신건강의학과",
       },
     ],
   },

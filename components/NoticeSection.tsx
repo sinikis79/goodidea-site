@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { notices } from "@/lib/notices";
+import { getPublicNotices } from "@/lib/notices";
 
-export default function NoticeSection() {
+export default async function NoticeSection() {
+  const notices = await getPublicNotices(4);
+
   return (
     <section className="bg-[#f8f5f1] pb-10 pt-4 sm:pb-16 sm:pt-8 lg:pb-20 lg:pt-10">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
@@ -13,13 +15,13 @@ export default function NoticeSection() {
             aria-hidden="true"
             width={720}
             height={720}
-            className="pointer-events-none absolute right-[-12%] top-[0%] hidden h-[32rem] w-auto select-none opacity-[0.55] sm:block lg:right-[-6%] lg:h-[44rem]"
+            className="pointer-events-none absolute right-[-12%] top-[0%] hidden h-[32rem] w-auto select-none opacity-[0.42] mix-blend-multiply sm:block lg:right-[-6%] lg:h-[44rem]"
           />
 
           <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-[0.34fr_0.66fr] lg:items-stretch lg:gap-14">
             <div className="lg:border-r lg:border-[#d6ccbf] lg:pr-12">
-              <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#8a8073]">
-                Notice
+              <p className="text-[13px] font-black tracking-[0.08em] text-[#8a8073]">
+                공지/휴무안내
               </p>
               <h2 className="mt-4 text-[2rem] font-black leading-[1.18] tracking-tight sm:text-[2.2rem]">
                 공지사항
@@ -36,7 +38,7 @@ export default function NoticeSection() {
             </div>
 
             <div className="border-t border-[#d9d0c5] lg:border-t-0 lg:py-3">
-              {notices.slice(0, 4).map((notice) => (
+              {notices.map((notice) => (
                 <Link
                   key={notice.id}
                   href={`/notice/${notice.id}`}

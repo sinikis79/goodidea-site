@@ -55,9 +55,6 @@ export default function InteriorPreviewSection() {
           <p className="mt-4 text-[0.98rem] leading-7 text-[#7b756c] sm:text-[1.05rem]">
             차분한 상담 공간을 미리 확인해보세요.
           </p>
-          <p className="mt-5 border-l border-[#d8cec2] pl-4 text-[0.88rem] leading-6 text-[#8a8073]">
-            사진은 준비되는 순서대로 업데이트됩니다.
-          </p>
         </div>
 
         <div className="overflow-hidden rounded-3xl border border-[#e6ded4] bg-[#fffcf7]/92 shadow-[0_16px_42px_rgba(73,64,55,0.045)]">
@@ -81,7 +78,7 @@ export default function InteriorPreviewSection() {
                     {!hasImageError && (
                       <Image
                         src={src}
-                        alt={`판교다시봄정신건강의학과 내부 공간 ${index + 1}`}
+                        alt={`판교다시봄 정신건강의학과 내부 공간 ${index + 1}`}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 62vw"
                         className="object-cover"

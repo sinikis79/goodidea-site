@@ -46,6 +46,12 @@ export default function AdminSidebar() {
       </nav>
 
       <div className="mt-auto px-3">
+        <Link
+          href="/admin/logout"
+          className="mb-4 block rounded-xl border border-[#d8cfc3] px-3 py-2 text-center text-[12px] font-black text-[#7b786f] transition hover:bg-[#f3eee5] hover:text-[#2b2a28]"
+        >
+          로그아웃
+        </Link>
         <p className="text-[11px] text-[#a89e90]">Mock 데이터 모드</p>
         <p className="text-[11px] text-[#c0b8ad]">Supabase 미연결</p>
       </div>

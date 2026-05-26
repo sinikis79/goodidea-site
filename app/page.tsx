@@ -5,6 +5,7 @@ import SiteHeader from "@/components/SiteHeader";
 import QuickLinksSection from "@/components/QuickLinksSection";
 import InteriorPreviewSection from "@/components/InteriorPreviewSection";
 import NoticeSection from "@/components/NoticeSection";
+import { getPublicOperatingHours } from "@/lib/operating-hours";
 
 
 const services = [
@@ -58,15 +59,9 @@ const services = [
   },
 ];
 
-const hours = [
-  ["월 · 수 · 금", "10:00 - 19:00"],
-  ["화 · 목", "10:00 - 20:00"],
-  ["토요일", "10:00 - 14:00"],
-  ["휴식시간", "14:00 - 15:00"],
-  ["일요일 · 공휴일", "휴진"],
-];
+export default async function Home() {
+  const hours = await getPublicOperatingHours();
 
-export default function Home() {
   return (
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
       <SiteHeader />
@@ -154,7 +149,7 @@ export default function Home() {
       </section>
 
       <section
-        aria-label="판교다시봄정신건강의학과 브랜드 구분 영역"
+        aria-label="판교다시봄 정신건강의학과 브랜드 구분 영역"
         className="bg-[#f8f5f1] px-6 pb-9 pt-8 sm:px-10 sm:pb-11 sm:pt-10"
       >
         <style>
@@ -173,7 +168,7 @@ export default function Home() {
             .brand-divider-logo {
               opacity: 0;
               transform: translateY(4px);
-              animation: brand-divider-reveal 1100ms ease-out 4400ms forwards;
+              animation: brand-divider-reveal 900ms ease-out 2600ms forwards;
             }
 
             @media (prefers-reduced-motion: reduce) {
@@ -188,7 +183,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-[1400px] justify-center">
           <Image
             src="/images/common/logo-wordmark.png"
-            alt="판교다시봄정신건강의학과"
+            alt="판교다시봄 정신건강의학과"
             width={760}
             height={180}
             className="brand-divider-logo h-auto w-[280px] opacity-50 sm:w-[360px]"
@@ -202,27 +197,46 @@ export default function Home() {
 
       <section
         id="about"
-        className="mx-auto grid max-w-[1400px] gap-8 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.82fr_1.18fr] lg:items-center"
+        className="mx-auto grid max-w-[1400px] gap-8 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:gap-12"
       >
-        <div>
-          <p className="text-[13px] font-black tracking-[0.08em] text-[#8a8073]">병원 소개</p>
-          <h2 className="mt-4 text-[1.85rem] font-black leading-[1.22] tracking-tight sm:text-[2.35rem]">
-            편안하지만 전문적인 상담을 지향합니다.
-          </h2>
-        </div>
-        <div className="border-l-0 border-[#cfc3b5] bg-transparent p-0 lg:border-l lg:pl-10">
-          <p className="max-w-[58ch] text-[1.05rem] leading-8 text-[#7b756c] sm:text-lg">
-            판교다시봄정신건강의학과는 평가보다 이해를, 빠른 결론보다 충분한
-            탐색을 중요하게 생각합니다. 낯선 방문의 긴장이 조금 덜어지도록
-            따뜻한 분위기와 명확한 안내를 준비했습니다.
+        <div className="max-w-[680px]">
+          <p className="text-[13px] font-black tracking-[0.08em] text-[#8a8073]">
+            병원소개
           </p>
+          <h2 className="mt-4 text-[1.85rem] font-black leading-[1.28] tracking-tight text-[#2b2a28] sm:text-[2.35rem] sm:leading-[1.24] lg:text-[2.65rem]">
+            아무도 몰랐던 마음 깊은 곳까지,
+            <br className="hidden sm:block" />
+            따뜻하게 바라봅니다.
+          </h2>
+          <div className="mt-6 space-y-5 text-[1.02rem] leading-8 text-[#6f6258] sm:text-[1.08rem] sm:leading-9">
+            <p>
+              혼자 견디기 어려웠던 마음의 무게,
+              <br />
+              이제는 조금 내려 놓으셔도 괜찮습니다.
+            </p>
+            <p>
+              당신의 마음을 다시 귀 기울여 듣고,
+              <br />
+              따뜻한 시선을 회복할 수 있도록 함께 하겠습니다.
+            </p>
+          </div>
+        </div>
+
+        <div className="relative overflow-hidden rounded-3xl border border-[#ded5ca] bg-[#fffcf7] shadow-[0_18px_42px_rgba(73,64,55,0.055)]">
+          <Image
+            src="/images/about/about-hero.jpeg"
+            alt="판교다시봄 정신건강의학과 병원 소개 이미지"
+            width={1200}
+            height={960}
+            className="aspect-[4/3] w-full object-cover lg:aspect-[5/4]"
+          />
         </div>
       </section>
 
       <section id="services" className="bg-[#f1ece5] py-16 sm:py-24">
         <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
           <div className="max-w-2xl">
-            <p className="text-[13px] font-black tracking-[0.08em] text-[#8a8073]">서비스</p>
+            <p className="text-[13px] font-black tracking-[0.08em] text-[#8a8073]">진료과목</p>
             <h2 className="mt-4 text-[1.85rem] font-black leading-[1.22] tracking-tight sm:text-[2.35rem]">
               필요한 순간에 맞는 상담을 제공합니다.
             </h2>
@@ -285,14 +299,14 @@ export default function Home() {
         </div>
 
         <div className="rounded-2xl border border-[#e5ddd4] bg-[#fffcf7] p-6 shadow-[0_18px_42px_rgba(73,64,55,0.06)] sm:p-8">
-          {hours.map(([day, time]) => (
+          {hours.map((hour) => (
             <div
-              key={day}
+              key={hour.id}
               className="flex items-center justify-between gap-4 border-b border-[#eee7df] py-4 last:border-0"
             >
-              <span className="font-black text-[#4b4741]">{day}</span>
+              <span className="font-black text-[#4b4741]">{hour.label}</span>
               <span className="text-right font-bold text-[#7b756c]">
-                {time}
+                {hour.value}
               </span>
             </div>
           ))}
