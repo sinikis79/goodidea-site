@@ -5,6 +5,8 @@ import SiteHeader from "@/components/SiteHeader";
 import QuickLinksSection from "@/components/QuickLinksSection";
 import InteriorPreviewSection from "@/components/InteriorPreviewSection";
 import NoticeSection from "@/components/NoticeSection";
+import { getPublicHospitalSettings } from "@/lib/hospital-settings";
+import { getPublicInteriorImages } from "@/lib/interior-images";
 import { getPublicOperatingHours } from "@/lib/operating-hours";
 
 
@@ -61,6 +63,12 @@ const services = [
 
 export default async function Home() {
   const hours = await getPublicOperatingHours();
+  const interiorImages = await getPublicInteriorImages();
+  const hospitalSettings = await getPublicHospitalSettings();
+  const locationDescriptionLines = hospitalSettings.location_description
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
 
   return (
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
@@ -192,7 +200,7 @@ export default async function Home() {
       </section>
 
       <QuickLinksSection />
-      <InteriorPreviewSection />
+      <InteriorPreviewSection images={interiorImages} />
       <NoticeSection />
 
       <section
@@ -318,29 +326,42 @@ export default async function Home() {
           <div>
             <p className="text-[13px] font-black tracking-[0.08em] text-[#8a8073]">오시는 길</p>
             <h2 className="mt-4 text-[1.85rem] font-black leading-[1.22] tracking-tight sm:text-[2.35rem]">
-              편안히 찾아오실 수 있도록 안내합니다.
+              {hospitalSettings.location_title}
             </h2>
             <div className="mt-7 max-w-[58ch] space-y-4 text-[1.05rem] leading-8 text-[#7b756c] sm:text-lg">
-              <p>경기 성남시 분당구 판교역로192번길 16 판교타워</p>
-              <p>
-                판교역 인근에서 편안히 찾아오실 수 있습니다. 자차 이용 시 건물
-                및 인근 주차 안내를 확인해 주세요.
-              </p>
+              {hospitalSettings.address ? <p>{hospitalSettings.address}</p> : null}
+              {locationDescriptionLines.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
             </div>
           </div>
 
-          <div className="flex min-h-72 items-center justify-center rounded-2xl border border-[#e5ddd4] bg-[#f8f5f1] p-6 text-left shadow-[0_18px_42px_rgba(73,64,55,0.06)]">
-            <div>
-              <p className="text-sm font-black text-[#756c61]">MAP</p>
-              <p className="mt-3 text-2xl font-black text-[#2b2a28]">
-                지도 영역
-              </p>
-              <p className="mt-3 leading-7 text-[#7b756c]">
-                추후 네이버 지도, 카카오 지도, 약도 이미지로 교체할 수
-                있습니다.
-              </p>
+          {hospitalSettings.location_image_url ? (
+            <div className="overflow-hidden rounded-2xl border border-[#e5ddd4] bg-[#f8f5f1] shadow-[0_18px_42px_rgba(73,64,55,0.06)]">
+              <Image
+                src={hospitalSettings.location_image_url}
+                alt={
+                  hospitalSettings.location_image_alt ?? "오시는 길 지도 이미지"
+                }
+                width={960}
+                height={640}
+                unoptimized
+                className="aspect-[3/2] w-full object-contain"
+              />
             </div>
-          </div>
+          ) : (
+            <div className="flex min-h-72 items-center justify-center rounded-2xl border border-[#e5ddd4] bg-[#f8f5f1] p-6 text-left shadow-[0_18px_42px_rgba(73,64,55,0.06)]">
+              <div>
+                <p className="text-sm font-black text-[#756c61]">MAP</p>
+                <p className="mt-3 text-2xl font-black text-[#2b2a28]">
+                  지도 영역
+                </p>
+                <p className="mt-3 leading-7 text-[#7b756c]">
+                  관리자에서 약도 또는 지도 이미지를 등록할 수 있습니다.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

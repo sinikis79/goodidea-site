@@ -85,6 +85,12 @@ export default function AdminPage() {
             의료진 관리
           </Link>
           <Link
+            href="/admin/interior"
+            className="rounded-xl border border-[#e5ddd4] px-4 py-2.5 text-[13px] font-bold text-[#7b786f] transition hover:bg-[#f3eee5] hover:text-[#2b2a28]"
+          >
+            병원 둘러보기
+          </Link>
+          <Link
             href="/admin/settings"
             className="rounded-xl border border-[#e5ddd4] px-4 py-2.5 text-[13px] font-bold text-[#7b786f] transition hover:bg-[#f3eee5] hover:text-[#2b2a28]"
           >

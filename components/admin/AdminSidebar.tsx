@@ -7,6 +7,7 @@ const navItems = [
   { label: "대시보드", href: "/admin" },
   { label: "공지사항 관리", href: "/admin/notices" },
   { label: "의료진 관리", href: "/admin/doctors" },
+  { label: "병원 둘러보기", href: "/admin/interior" },
   { label: "기본정보 설정", href: "/admin/settings" },
 ];
 

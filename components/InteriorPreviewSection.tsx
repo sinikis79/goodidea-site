@@ -2,17 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import type { PublicInteriorImage } from "@/lib/interior-images";
 
 const SLIDE_INTERVAL_MS = 2500;
 
-const interiorImages = [
-  "/images/interior/interior-1.jpg",
-  "/images/interior/interior-2.jpg",
-  "/images/interior/interior-3.jpg",
-  "/images/interior/interior-4.jpg",
-];
+type InteriorPreviewSectionProps = {
+  images: PublicInteriorImage[];
+};
 
-export default function InteriorPreviewSection() {
+export default function InteriorPreviewSection({
+  images,
+}: InteriorPreviewSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
@@ -30,14 +30,14 @@ export default function InteriorPreviewSection() {
   }, []);
 
   useEffect(() => {
-    if (reducedMotion || interiorImages.length <= 1) return;
+    if (reducedMotion || images.length <= 1) return;
 
     const intervalId = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % interiorImages.length);
+      setActiveIndex((current) => (current + 1) % images.length);
     }, SLIDE_INTERVAL_MS);
 
     return () => window.clearInterval(intervalId);
-  }, [reducedMotion]);
+  }, [images.length, reducedMotion]);
 
   return (
     <section
@@ -67,20 +67,24 @@ export default function InteriorPreviewSection() {
               }`}
               style={{ transform: `translateX(-${activeIndex * 100}%)` }}
             >
-              {interiorImages.map((src, index) => {
+              {images.map((image, index) => {
                 const hasImageError = failedImages.has(index);
 
                 return (
                   <div
-                    key={src}
+                    key={image.id}
                     className="relative h-full min-w-full bg-[#f3eee5]"
                   >
                     {!hasImageError && (
                       <Image
-                        src={src}
-                        alt={`판교다시봄 정신건강의학과 내부 공간 ${index + 1}`}
+                        src={image.image_url}
+                        alt={
+                          image.image_alt ||
+                          `판교다시봄 정신건강의학과 내부 공간 ${index + 1}`
+                        }
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 62vw"
+                        unoptimized
                         className="object-cover"
                         onError={() => {
                           setFailedImages((current) => {
@@ -111,9 +115,9 @@ export default function InteriorPreviewSection() {
           </div>
 
           <div className="flex items-center justify-center gap-2 px-5 py-3 sm:py-4">
-            {interiorImages.map((_, index) => (
+            {images.map((image, index) => (
               <button
-                key={index}
+                key={image.id}
                 type="button"
                 aria-label={`병원 둘러보기 ${index + 1}번째 사진 보기`}
                 onClick={() => setActiveIndex(index)}

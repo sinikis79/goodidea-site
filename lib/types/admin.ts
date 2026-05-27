@@ -58,6 +58,7 @@ export type HospitalSettings = {
   hours_lunch: string;
   kakao_url: string | null;
   naver_map_url: string | null;
+  location_title: string;
   location_description: string;
   location_image_url: string | null;
   location_image_alt: string | null;

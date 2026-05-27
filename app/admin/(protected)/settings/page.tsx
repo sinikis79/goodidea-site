@@ -1,7 +1,12 @@
+import Image from "next/image";
 import { mockOperatingHours, mockSettings } from "@/lib/admin/mockData";
-import type { AdminOperatingHour } from "@/lib/types/admin";
+import type { AdminOperatingHour, HospitalSettings } from "@/lib/types/admin";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
-import { addOperatingHourAction, saveOperatingHoursAction } from "./actions";
+import {
+  addOperatingHourAction,
+  saveLocationSettingsAction,
+  saveOperatingHoursAction,
+} from "./actions";
 
 type FieldRowProps = {
   label: string;
@@ -46,9 +51,48 @@ async function getOperatingHours(): Promise<AdminOperatingHour[]> {
   }
 }
 
-export default async function AdminSettingsPage() {
-  const s = mockSettings;
+async function getHospitalSettings(): Promise<HospitalSettings> {
+  try {
+    const supabase = getSupabaseAdminClient();
+    const { data, error } = await supabase
+      .from("hospital_settings")
+      .select(
+        "name,address,phone,fax,hours_weekday,hours_saturday,hours_sunday,hours_lunch,kakao_url,naver_map_url,location_title,location_description,location_image_url,location_image_alt,description",
+      )
+      .eq("id", 1)
+      .single();
+
+    if (error || !data) {
+      return mockSettings;
+    }
+
+    return {
+      ...mockSettings,
+      ...data,
+      location_title: data.location_title || mockSettings.location_title,
+    };
+  } catch {
+    return mockSettings;
+  }
+}
+
+type AdminSettingsPageProps = {
+  searchParams?: Promise<{
+    status?: string;
+  }>;
+};
+
+const statusMessage: Record<string, string> = {
+  "location-saved": "오시는 길 정보가 저장되었습니다.",
+};
+
+export default async function AdminSettingsPage({
+  searchParams,
+}: AdminSettingsPageProps) {
+  const s = await getHospitalSettings();
   const operatingHours = await getOperatingHours();
+  const params = await searchParams;
+  const message = params?.status ? statusMessage[params.status] : null;
   const canAddOperatingHour = operatingHours.length < 5;
 
   return (
@@ -61,6 +105,12 @@ export default async function AdminSettingsPage() {
           기본정보 설정
         </h1>
       </div>
+
+      {message ? (
+        <div className="mb-4 rounded-xl border border-[#d9e6d2] bg-[#f3f8ef] px-5 py-3 text-[13px] font-black text-[#58724a]">
+          {message}
+        </div>
+      ) : null}
 
       <div className="flex flex-col gap-6">
         <section className="rounded-2xl border border-[#e5ddd4] bg-[#fffcf7] p-6">
@@ -204,11 +254,83 @@ export default async function AdminSettingsPage() {
           </div>
         </section>
 
+        <section className="rounded-2xl border border-[#e5ddd4] bg-[#fffcf7] p-6">
+          <h2 className="mb-5 text-[13px] font-black uppercase tracking-[0.1em] text-[#a89e90]">
+            오시는 길
+          </h2>
+          <form action={saveLocationSettingsAction} className="flex flex-col gap-5">
+            <input
+              type="hidden"
+              name="current_location_image_url"
+              value={s.location_image_url ?? ""}
+            />
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-black text-[#a89e90]">
+                섹션 제목
+              </span>
+              <input
+                name="location_title"
+                defaultValue={s.location_title}
+                className="h-11 rounded-xl border border-[#ded5ca] bg-[#f8f4ed] px-3 text-[13px] font-bold text-[#2b2a28] outline-none focus:border-[#b7a38f]"
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-black text-[#a89e90]">
+                설명글
+              </span>
+              <textarea
+                name="location_description"
+                defaultValue={s.location_description}
+                rows={4}
+                className="rounded-xl border border-[#ded5ca] bg-[#f8f4ed] px-3 py-3 text-[13px] font-bold leading-7 text-[#2b2a28] outline-none focus:border-[#b7a38f]"
+              />
+            </label>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_240px] lg:items-start">
+              <label className="flex flex-col gap-1.5">
+                <span className="text-[11px] font-black text-[#a89e90]">
+                  지도 이미지
+                </span>
+                <input
+                  name="location_image"
+                  type="file"
+                  accept="image/*"
+                  className="rounded-xl border border-[#ded5ca] bg-[#f8f4ed] px-3 py-2 text-[13px] font-bold text-[#7b786f] file:mr-3 file:rounded-lg file:border-0 file:bg-[#e8ddd0] file:px-3 file:py-1.5 file:text-[12px] file:font-black file:text-[#5f5146]"
+                />
+                <span className="text-[12px] font-bold leading-6 text-[#a89e90]">
+                  새 이미지를 선택하면 기존 지도 이미지가 교체됩니다.
+                </span>
+              </label>
+              <div className="overflow-hidden rounded-2xl border border-[#e5ddd4] bg-[#f8f4ed]">
+                {s.location_image_url ? (
+                  <Image
+                    src={s.location_image_url}
+                    alt={s.location_image_alt ?? "오시는 길 지도 이미지"}
+                    width={480}
+                    height={300}
+                    unoptimized
+                    className="aspect-[8/5] w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex aspect-[8/5] items-center justify-center px-4 text-center text-[12px] font-black text-[#b5aa9c]">
+                    지도 이미지 미등록
+                  </div>
+                )}
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="self-start rounded-xl bg-[#5f5146] px-5 py-2.5 text-[13px] font-black text-white transition hover:bg-[#4d4138]"
+            >
+              오시는 길 저장
+            </button>
+          </form>
+        </section>
+
       </div>
 
       <div className="mt-6 rounded-xl border border-[#f0e8d8] bg-[#fdf6ec] px-5 py-3.5">
         <p className="text-[12px] font-bold text-[#b89060]">
-          진료시간은 Supabase에 저장됩니다. 병원 정보와 외부 링크 수정은 다음 단계에서 연결됩니다.
+          진료시간과 오시는 길 정보는 Supabase에 저장됩니다. 병원 정보와 외부 링크 수정은 다음 단계에서 연결됩니다.
         </p>
       </div>
     </div>

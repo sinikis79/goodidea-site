@@ -94,6 +94,7 @@ create table if not exists public.hospital_settings (
   hours_lunch     text        not null default '',
   kakao_url       text,
   naver_map_url   text,
+  location_title text not null default '편안히 찾아오실 수 있도록 안내합니다.',
   location_description text not null default '',
   location_image_url text,
   location_image_alt text,
@@ -110,6 +111,7 @@ on conflict (id) do nothing;
 
 -- 기존 hospital_settings 테이블이 있는 경우를 위한 컬럼 보강
 alter table public.hospital_settings
+  add column if not exists location_title text not null default '편안히 찾아오실 수 있도록 안내합니다.',
   add column if not exists location_description text not null default '',
   add column if not exists location_image_url text,
   add column if not exists location_image_alt text;

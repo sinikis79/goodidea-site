@@ -169,6 +169,7 @@ export const mockSettings: HospitalSettings = {
   hours_lunch: "13:00 – 14:00",
   kakao_url: null,
   naver_map_url: null,
+  location_title: "편안히 찾아오실 수 있도록 안내합니다.",
   location_description:
     "판교역 인근에서 편안히 찾아오실 수 있습니다. 자차 이용 시 건물 및 인근 주차 안내를 확인해 주세요.",
   location_image_url: null,

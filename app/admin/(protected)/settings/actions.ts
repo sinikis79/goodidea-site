@@ -1,9 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 
 const MAX_OPERATING_HOURS = 5;
+
+function getFileExtension(file: File) {
+  const extension = file.name.split(".").pop()?.toLowerCase();
+  return extension && /^[a-z0-9]+$/.test(extension) ? extension : "jpg";
+}
 
 export async function saveOperatingHoursAction(formData: FormData) {
   const supabase = getSupabaseAdminClient();
@@ -68,4 +74,61 @@ export async function addOperatingHourAction(formData: FormData) {
 
   revalidatePath("/");
   revalidatePath("/admin/settings");
+}
+
+export async function saveLocationSettingsAction(formData: FormData) {
+  const supabase = getSupabaseAdminClient();
+  const locationTitle = String(formData.get("location_title") ?? "").trim();
+  const locationDescription = String(
+    formData.get("location_description") ?? "",
+  ).trim();
+  const currentImageUrl = String(
+    formData.get("current_location_image_url") ?? "",
+  ).trim();
+  const image = formData.get("location_image");
+  let locationImageUrl = currentImageUrl || null;
+
+  if (!locationTitle) {
+    throw new Error("오시는 길 제목을 입력해주세요.");
+  }
+
+  if (image instanceof File && image.size > 0) {
+    const extension = getFileExtension(image);
+    const filePath = `location-${Date.now()}.${extension}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("location-images")
+      .upload(filePath, image, {
+        contentType: image.type || "image/jpeg",
+        upsert: false,
+      });
+
+    if (uploadError) {
+      throw new Error(uploadError.message);
+    }
+
+    const { data } = supabase.storage
+      .from("location-images")
+      .getPublicUrl(filePath);
+
+    locationImageUrl = data.publicUrl;
+  }
+
+  const { error } = await supabase
+    .from("hospital_settings")
+    .update({
+      location_title: locationTitle,
+      location_description: locationDescription,
+      location_image_url: locationImageUrl,
+      location_image_alt: locationImageUrl ? "오시는 길 지도 이미지" : null,
+    })
+    .eq("id", 1);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/settings");
+  redirect("/admin/settings?status=location-saved");
 }
