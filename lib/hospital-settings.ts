@@ -41,7 +41,7 @@ export async function getPublicHospitalSettings(): Promise<PublicHospitalSetting
   const { data, error } = await supabase
     .from("hospital_settings")
     .select(
-      "name,address,phone,location_title,location_description,location_image_url,location_image_alt",
+      "name,address,phone,location_description,location_image_url,location_image_alt",
     )
     .eq("id", 1)
     .single();
@@ -53,8 +53,7 @@ export async function getPublicHospitalSettings(): Promise<PublicHospitalSetting
   return {
     ...fallbackHospitalSettings,
     ...data,
-    location_title:
-      data.location_title || fallbackHospitalSettings.location_title,
+    location_title: fallbackHospitalSettings.location_title,
     location_description:
       data.location_description ||
       fallbackHospitalSettings.location_description,

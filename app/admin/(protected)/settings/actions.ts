@@ -104,19 +104,11 @@ export async function saveLocationSettingsAction(formData: FormData) {
     redirect("/admin/settings?status=location-save-error");
   }
 
-  const locationTitle = String(formData.get("location_title") ?? "").trim();
-  const locationDescription = String(
-    formData.get("location_description") ?? "",
-  ).trim();
   const currentImageUrl = String(
     formData.get("current_location_image_url") ?? "",
   ).trim();
   const image = formData.get("location_image");
   let locationImageUrl = currentImageUrl || null;
-
-  if (!locationTitle) {
-    redirect("/admin/settings?status=location-title-required");
-  }
 
   if (image instanceof File && image.size > 0) {
     const extension = getFileExtension(image);
@@ -144,14 +136,16 @@ export async function saveLocationSettingsAction(formData: FormData) {
     locationImageUrl = data.publicUrl;
   }
 
+  if (!locationImageUrl) {
+    redirect("/admin/settings?status=location-image-required");
+  }
+
   try {
     const { error } = await supabase
       .from("hospital_settings")
       .update({
-        location_title: locationTitle,
-        location_description: locationDescription,
         location_image_url: locationImageUrl,
-        location_image_alt: locationImageUrl ? "오시는 길 지도 이미지" : null,
+        location_image_alt: "오시는 길 지도 이미지",
       })
       .eq("id", 1);
 
