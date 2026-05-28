@@ -4,6 +4,7 @@ import type { AdminOperatingHour, HospitalSettings } from "@/lib/types/admin";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import {
   addOperatingHourAction,
+  saveHospitalInfoAction,
   saveLocationSettingsAction,
   saveOperatingHoursAction,
 } from "./actions";
@@ -85,6 +86,9 @@ type AdminSettingsPageProps = {
 };
 
 const statusMessage: Record<string, string> = {
+  "hospital-info-saved": "병원 정보가 저장되었습니다.",
+  "hospital-info-required": "병원명과 전화번호를 입력해주세요.",
+  "hospital-info-error": "병원 정보 저장에 실패했습니다.",
   "hours-saved": "진료시간이 저장되었습니다.",
   "hours-required": "진료시간 라벨과 내용을 입력해주세요.",
   "hours-limit": "진료시간은 최대 5줄까지 등록할 수 있습니다.",
@@ -98,6 +102,8 @@ const statusMessage: Record<string, string> = {
 };
 
 const errorStatuses = new Set([
+  "hospital-info-required",
+  "hospital-info-error",
   "hours-required",
   "hours-limit",
   "hours-error",
@@ -145,13 +151,66 @@ export default async function AdminSettingsPage({
           <h2 className="mb-5 text-[13px] font-black uppercase tracking-[0.1em] text-[#a89e90]">
             병원 정보
           </h2>
-          <div className="flex flex-col gap-4">
-            <FieldRow label="병원명" value={s.name} />
-            <FieldRow label="주소" value={s.address} />
-            <FieldRow label="전화번호" value={s.phone} />
-            <FieldRow label="팩스" value={s.fax} />
-            <FieldRow label="소개문구" value={s.description} />
-          </div>
+          <form action={saveHospitalInfoAction} className="flex flex-col gap-4">
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-black text-[#a89e90]">
+                병원명
+              </span>
+              <input
+                name="name"
+                defaultValue={s.name}
+                className="h-11 rounded-xl border border-[#ded5ca] bg-[#f8f4ed] px-3 text-[13px] font-bold text-[#2b2a28] outline-none focus:border-[#b7a38f]"
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-black text-[#a89e90]">
+                주소
+              </span>
+              <input
+                name="address"
+                defaultValue={s.address}
+                className="h-11 rounded-xl border border-[#ded5ca] bg-[#f8f4ed] px-3 text-[13px] font-bold text-[#2b2a28] outline-none focus:border-[#b7a38f]"
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-black text-[#a89e90]">
+                전화번호
+              </span>
+              <input
+                name="phone"
+                defaultValue={s.phone}
+                placeholder="031-000-0000"
+                className="h-11 rounded-xl border border-[#ded5ca] bg-[#f8f4ed] px-3 text-[13px] font-bold text-[#2b2a28] outline-none focus:border-[#b7a38f]"
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-black text-[#a89e90]">
+                팩스
+              </span>
+              <input
+                name="fax"
+                defaultValue={s.fax ?? ""}
+                className="h-11 rounded-xl border border-[#ded5ca] bg-[#f8f4ed] px-3 text-[13px] font-bold text-[#2b2a28] outline-none focus:border-[#b7a38f]"
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-black text-[#a89e90]">
+                소개문구
+              </span>
+              <textarea
+                name="description"
+                defaultValue={s.description}
+                rows={3}
+                className="rounded-xl border border-[#ded5ca] bg-[#f8f4ed] px-3 py-3 text-[13px] font-bold leading-7 text-[#2b2a28] outline-none focus:border-[#b7a38f]"
+              />
+            </label>
+            <button
+              type="submit"
+              className="self-start rounded-xl bg-[#5f5146] px-5 py-2.5 text-[13px] font-black text-white transition hover:bg-[#4d4138]"
+            >
+              병원 정보 저장
+            </button>
+          </form>
         </section>
 
         <section className="rounded-2xl border border-[#e5ddd4] bg-[#fffcf7] p-6">

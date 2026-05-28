@@ -1,8 +1,10 @@
-const quickLinks = [
+import { DEFAULT_PHONE_HREF } from "@/lib/phone";
+
+const getQuickLinks = (phoneHref: string) => [
   {
     title: "전화 상담",
     description: "방문 전 궁금한 점을 바로 문의하세요.",
-    href: "tel:031-000-0000",
+    href: phoneHref,
     icon: "phone",
   },
   {
@@ -74,7 +76,15 @@ function QuickIcon({ name }: { name: string }) {
   );
 }
 
-export default function QuickLinksSection() {
+type QuickLinksSectionProps = {
+  phoneHref?: string;
+};
+
+export default function QuickLinksSection({
+  phoneHref = DEFAULT_PHONE_HREF,
+}: QuickLinksSectionProps) {
+  const quickLinks = getQuickLinks(phoneHref);
+
   return (
     <section className="mx-auto max-w-[1400px] px-5 pb-6 pt-4 sm:px-8 sm:pb-14 sm:pt-10 lg:pb-16 lg:pt-12">
       <style>{`

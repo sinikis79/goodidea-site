@@ -1,15 +1,19 @@
-const bottomNavItems = [
-  { label: "전화", href: "tel:031-000-0000", icon: "phone" },
+import { DEFAULT_PHONE_HREF } from "@/lib/phone";
+
+const getBottomNavItems = (phoneHref: string) => [
+  { label: "전화", href: phoneHref, icon: "phone" },
   { label: "오시는길", href: "#location", icon: "map" },
   { label: "상담", href: "#services", icon: "chat" },
   { label: "진료시간", href: "#hours", icon: "clock" },
   { label: "블로그", href: "#about", icon: "blog" },
 ] as const;
 
+type BottomNavIconName = ReturnType<typeof getBottomNavItems>[number]["icon"];
+
 function BottomNavIcon({
   name,
 }: {
-  name: (typeof bottomNavItems)[number]["icon"];
+  name: BottomNavIconName;
 }) {
   const common = {
     className: "h-7 w-7",
@@ -68,7 +72,13 @@ function BottomNavIcon({
   );
 }
 
-export default function BottomNav() {
+type BottomNavProps = {
+  phoneHref?: string;
+};
+
+export default function BottomNav({ phoneHref = DEFAULT_PHONE_HREF }: BottomNavProps) {
+  const bottomNavItems = getBottomNavItems(phoneHref);
+
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#cfc3b5] bg-[#fffcf7]/95 px-2 pt-3 pb-[calc(0.875rem+env(safe-area-inset-bottom))] shadow-[0_-10px_30px_rgba(73,64,55,0.11)] backdrop-blur md:hidden">
       <nav

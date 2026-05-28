@@ -8,6 +8,7 @@ import NoticeSection from "@/components/NoticeSection";
 import { getPublicHospitalSettings } from "@/lib/hospital-settings";
 import { getPublicInteriorImages } from "@/lib/interior-images";
 import { getPublicOperatingHours } from "@/lib/operating-hours";
+import { toPhoneHref } from "@/lib/phone";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +67,7 @@ export default async function Home() {
   const hours = await getPublicOperatingHours();
   const interiorImages = await getPublicInteriorImages();
   const hospitalSettings = await getPublicHospitalSettings();
+  const phoneHref = toPhoneHref(hospitalSettings.phone);
   const locationDescriptionLines = hospitalSettings.location_description
     .split("\n")
     .map((line) => line.trim())
@@ -73,7 +75,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
-      <SiteHeader />
+      <SiteHeader phoneHref={phoneHref} />
 
       <section className="relative isolate overflow-hidden bg-[#171812] text-[#fffcf7]">
         <style>
@@ -141,7 +143,7 @@ export default async function Home() {
             </h1>
             <div className="hero-reveal mx-auto mt-7 flex max-w-[310px] flex-col gap-2.5 [animation-delay:1500ms] sm:max-w-none sm:flex-row sm:justify-center">
               <a
-                href="tel:031-000-0000"
+                href={phoneHref}
                 className="flex min-h-11 items-center justify-center rounded-xl border border-[#fff7ec]/70 bg-[#fffaf2]/90 px-4 text-[0.86rem] font-black text-[#4b4741] shadow-[0_5px_12px_rgba(23,24,18,0.055)] transition active:scale-[0.98] hover:bg-[#fffcf7] sm:min-w-[140px]"
               >
                 전화로 상담 문의하기
@@ -200,7 +202,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <QuickLinksSection />
+      <QuickLinksSection phoneHref={phoneHref} />
       <InteriorPreviewSection images={interiorImages} />
       <NoticeSection />
 
@@ -366,7 +368,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <BottomNav />
+      <BottomNav phoneHref={phoneHref} />
     </main>
   );
 }

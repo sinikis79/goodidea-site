@@ -49,6 +49,46 @@ export async function saveOperatingHoursAction(formData: FormData) {
   redirect("/admin/settings?status=hours-saved");
 }
 
+export async function saveHospitalInfoAction(formData: FormData) {
+  let supabase;
+
+  try {
+    supabase = getSupabaseAdminClient();
+  } catch {
+    redirect("/admin/settings?status=hospital-info-error");
+  }
+
+  const name = String(formData.get("name") ?? "").trim();
+  const address = String(formData.get("address") ?? "").trim();
+  const phone = String(formData.get("phone") ?? "").trim();
+  const fax = String(formData.get("fax") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim();
+
+  if (!name || !phone) {
+    redirect("/admin/settings?status=hospital-info-required");
+  }
+
+  const { error } = await supabase
+    .from("hospital_settings")
+    .update({
+      name,
+      address,
+      phone,
+      fax: fax || null,
+      description,
+    })
+    .eq("id", 1);
+
+  if (error) {
+    redirect("/admin/settings?status=hospital-info-error");
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/settings");
+  await refreshAdminSession();
+  redirect("/admin/settings?status=hospital-info-saved");
+}
+
 export async function addOperatingHourAction(formData: FormData) {
   let supabase;
 

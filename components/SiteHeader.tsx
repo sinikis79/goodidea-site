@@ -4,12 +4,12 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "@/components/MobileMenu";
+import { DEFAULT_PHONE_HREF } from "@/lib/phone";
 
 const KAKAO_CHANNEL_URL = "https://pf.kakao.com/_xxxxxx/chat";
-const PHONE_NUMBER = "tel:031-000-0000";
 const BLOG_URL = "#";
 
-const navGroups = [
+const getNavGroups = (phoneHref: string) => [
   {
     key: "about",
     label: "병원소개",
@@ -33,7 +33,7 @@ const navGroups = [
     label: "예약하기",
     items: [
       { label: "카톡 예약하기", href: KAKAO_CHANNEL_URL },
-      { label: "전화 예약", href: PHONE_NUMBER },
+      { label: "전화 예약", href: phoneHref },
     ],
   },
 ];
@@ -44,15 +44,19 @@ const standaloneNavItems = [
   { label: "오시는 길", href: "/#location" },
 ];
 
-const mobileNavItems = [...navGroups, ...standaloneNavItems];
-
 const isExternalHref = (href: string) =>
   href.startsWith("http") || href.startsWith("tel:");
 
-export default function SiteHeader() {
+type SiteHeaderProps = {
+  phoneHref?: string;
+};
+
+export default function SiteHeader({ phoneHref = DEFAULT_PHONE_HREF }: SiteHeaderProps) {
   const pathname = usePathname();
   const [hasScrolled, setHasScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const navGroups = getNavGroups(phoneHref);
+  const mobileNavItems = [...navGroups, ...standaloneNavItems];
 
   const isActivePath = (href: string) => {
     if (href.startsWith("/#")) return false;
