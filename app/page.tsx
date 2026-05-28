@@ -233,7 +233,7 @@ export default async function Home() {
 
         <div className="relative overflow-hidden rounded-3xl border border-[#ded5ca] bg-[#fffcf7] shadow-[0_18px_42px_rgba(73,64,55,0.055)]">
           <Image
-            src="/images/about/about-hero.jpeg"
+            src="/images/about/about-hero.png"
             alt="판교다시봄 정신건강의학과 병원 소개 이미지"
             width={1200}
             height={960}
