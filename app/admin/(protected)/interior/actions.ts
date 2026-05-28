@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { refreshAdminSession, requireAdminSession } from "@/lib/admin/session";
+import { refreshAdminSession } from "@/lib/admin/session";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 
 function getFileExtension(file: File) {
@@ -15,8 +15,6 @@ function revalidateInteriorPaths() {
 }
 
 export async function addInteriorImageAction(formData: FormData) {
-  await requireAdminSession();
-
   const image = formData.get("image");
 
   if (!(image instanceof File) || image.size === 0) {
@@ -60,8 +58,6 @@ export async function addInteriorImageAction(formData: FormData) {
 }
 
 export async function updateInteriorImageAction(formData: FormData) {
-  await requireAdminSession();
-
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
@@ -86,8 +82,6 @@ export async function updateInteriorImageAction(formData: FormData) {
 }
 
 export async function deleteInteriorImageAction(formData: FormData) {
-  await requireAdminSession();
-
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
