@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { refreshAdminSession, requireAdminSession } from "@/lib/admin/session";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 
@@ -58,7 +57,6 @@ export async function addInteriorImageAction(formData: FormData) {
 
   revalidateInteriorPaths();
   await refreshAdminSession();
-  redirect("/admin/interior?status=added");
 }
 
 export async function updateInteriorImageAction(formData: FormData) {
@@ -85,7 +83,6 @@ export async function updateInteriorImageAction(formData: FormData) {
 
   revalidateInteriorPaths();
   await refreshAdminSession();
-  redirect("/admin/interior?status=saved");
 }
 
 export async function deleteInteriorImageAction(formData: FormData) {
@@ -106,5 +103,4 @@ export async function deleteInteriorImageAction(formData: FormData) {
 
   revalidateInteriorPaths();
   await refreshAdminSession();
-  redirect("/admin/interior?status=deleted");
 }
