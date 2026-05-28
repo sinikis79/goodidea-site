@@ -36,7 +36,19 @@ const statusMessage: Record<string, string> = {
   added: "사진이 추가되었습니다.",
   saved: "변경사항이 저장되었습니다.",
   deleted: "사진이 삭제되었습니다.",
+  "image-required": "업로드할 사진을 선택해주세요.",
+  "upload-error":
+    "사진 업로드에 실패했습니다. Vercel 환경변수와 Supabase Storage 설정을 확인해주세요.",
+  "save-error": "사진 정보 저장에 실패했습니다.",
+  "delete-error": "사진 삭제에 실패했습니다.",
 };
+
+const errorStatuses = new Set([
+  "image-required",
+  "upload-error",
+  "save-error",
+  "delete-error",
+]);
 
 export default async function AdminInteriorPage({
   searchParams,
@@ -44,6 +56,7 @@ export default async function AdminInteriorPage({
   const images = await getInteriorImages();
   const params = await searchParams;
   const message = params?.status ? statusMessage[params.status] : null;
+  const isError = params?.status ? errorStatuses.has(params.status) : false;
 
   return (
     <div>
@@ -60,7 +73,13 @@ export default async function AdminInteriorPage({
       </div>
 
       {message ? (
-        <div className="mb-4 rounded-xl border border-[#d9e6d2] bg-[#f3f8ef] px-5 py-3 text-[13px] font-black text-[#58724a]">
+        <div
+          className={`mb-4 rounded-xl border px-5 py-3 text-[13px] font-black ${
+            isError
+              ? "border-[#f0d7c8] bg-[#fff3ed] text-[#b06a45]"
+              : "border-[#d9e6d2] bg-[#f3f8ef] text-[#58724a]"
+          }`}
+        >
           {message}
         </div>
       ) : null}
