@@ -64,9 +64,11 @@ const services = [
 ];
 
 export default async function Home() {
-  const hours = await getPublicOperatingHours();
-  const interiorImages = await getPublicInteriorImages();
-  const hospitalSettings = await getPublicHospitalSettings();
+  const [hours, interiorImages, hospitalSettings] = await Promise.all([
+    getPublicOperatingHours(),
+    getPublicInteriorImages(),
+    getPublicHospitalSettings(),
+  ]);
   const phoneHref = toPhoneHref(hospitalSettings.phone);
   const locationDescriptionLines = hospitalSettings.location_description
     .split("\n")
