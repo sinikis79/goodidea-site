@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { refreshAdminSession, requireAdminSession } from "@/lib/admin/session";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 
 const MAX_DOCTORS = 4;
@@ -11,6 +12,8 @@ function getFileExtension(file: File) {
 }
 
 export async function addDoctorImageAction(formData: FormData) {
+  await requireAdminSession();
+
   const supabase = getSupabaseAdminClient();
   const image = formData.get("image");
 
@@ -66,9 +69,12 @@ export async function addDoctorImageAction(formData: FormData) {
 
   revalidatePath("/doctors");
   revalidatePath("/admin/doctors");
+  await refreshAdminSession();
 }
 
 export async function updateDoctorImageMetaAction(formData: FormData) {
+  await requireAdminSession();
+
   const supabase = getSupabaseAdminClient();
   const id = String(formData.get("id") ?? "");
 
@@ -90,4 +96,5 @@ export async function updateDoctorImageMetaAction(formData: FormData) {
 
   revalidatePath("/doctors");
   revalidatePath("/admin/doctors");
+  await refreshAdminSession();
 }

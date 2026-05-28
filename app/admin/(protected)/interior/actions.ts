@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { refreshAdminSession, requireAdminSession } from "@/lib/admin/session";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 
 function getFileExtension(file: File) {
@@ -15,6 +16,8 @@ function revalidateInteriorPaths() {
 }
 
 export async function addInteriorImageAction(formData: FormData) {
+  await requireAdminSession();
+
   const image = formData.get("image");
 
   if (!(image instanceof File) || image.size === 0) {
@@ -54,10 +57,13 @@ export async function addInteriorImageAction(formData: FormData) {
   }
 
   revalidateInteriorPaths();
+  await refreshAdminSession();
   redirect("/admin/interior?status=added");
 }
 
 export async function updateInteriorImageAction(formData: FormData) {
+  await requireAdminSession();
+
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
@@ -78,10 +84,13 @@ export async function updateInteriorImageAction(formData: FormData) {
   }
 
   revalidateInteriorPaths();
+  await refreshAdminSession();
   redirect("/admin/interior?status=saved");
 }
 
 export async function deleteInteriorImageAction(formData: FormData) {
+  await requireAdminSession();
+
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
@@ -96,5 +105,6 @@ export async function deleteInteriorImageAction(formData: FormData) {
   }
 
   revalidateInteriorPaths();
+  await refreshAdminSession();
   redirect("/admin/interior?status=deleted");
 }
