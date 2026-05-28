@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { refreshAdminSession } from "@/lib/admin/session";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 
@@ -19,10 +20,17 @@ export async function createTextNoticeAction(formData: FormData) {
   const published = formData.get("published") === "on";
 
   if (!title || !content) {
-    return;
+    redirect("/admin/notices?status=notice-required");
   }
 
-  const supabase = getSupabaseAdminClient();
+  let supabase;
+
+  try {
+    supabase = getSupabaseAdminClient();
+  } catch {
+    redirect("/admin/notices?status=notice-error");
+  }
+
   const { error } = await supabase.from("notices").insert({
     title,
     content,
@@ -33,11 +41,12 @@ export async function createTextNoticeAction(formData: FormData) {
   });
 
   if (error) {
-    throw new Error(error.message);
+    redirect("/admin/notices?status=notice-error");
   }
 
   revalidateNoticePaths();
   await refreshAdminSession();
+  redirect("/admin/notices?status=notice-created");
 }
 
 function getFileExtension(file: File) {
@@ -54,22 +63,33 @@ export async function createImageNoticeAction(formData: FormData) {
   const image = formData.get("image");
 
   if (!title || !(image instanceof File) || image.size === 0) {
-    return;
+    redirect("/admin/notices?status=notice-image-required");
   }
 
-  const supabase = getSupabaseAdminClient();
+  let supabase;
+
+  try {
+    supabase = getSupabaseAdminClient();
+  } catch {
+    redirect("/admin/notices?status=notice-error");
+  }
+
   const extension = getFileExtension(image);
   const filePath = `notice-${Date.now()}.${extension}`;
 
-  const { error: uploadError } = await supabase.storage
-    .from("notice-images")
-    .upload(filePath, image, {
-      contentType: image.type || "image/jpeg",
-      upsert: false,
-    });
+  try {
+    const { error: uploadError } = await supabase.storage
+      .from("notice-images")
+      .upload(filePath, image, {
+        contentType: image.type || "image/jpeg",
+        upsert: false,
+      });
 
-  if (uploadError) {
-    throw new Error(uploadError.message);
+    if (uploadError) {
+      redirect("/admin/notices?status=notice-upload-error");
+    }
+  } catch {
+    redirect("/admin/notices?status=notice-upload-error");
   }
 
   const { data } = supabase.storage
@@ -88,21 +108,29 @@ export async function createImageNoticeAction(formData: FormData) {
   });
 
   if (error) {
-    throw new Error(error.message);
+    redirect("/admin/notices?status=notice-error");
   }
 
   revalidateNoticePaths();
   await refreshAdminSession();
+  redirect("/admin/notices?status=notice-created");
 }
 
 export async function updateNoticeStatusAction(formData: FormData) {
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
-    return;
+    redirect("/admin/notices?status=notice-error");
   }
 
-  const supabase = getSupabaseAdminClient();
+  let supabase;
+
+  try {
+    supabase = getSupabaseAdminClient();
+  } catch {
+    redirect("/admin/notices?status=notice-error");
+  }
+
   const { error } = await supabase
     .from("notices")
     .update({
@@ -113,27 +141,36 @@ export async function updateNoticeStatusAction(formData: FormData) {
     .eq("id", id);
 
   if (error) {
-    throw new Error(error.message);
+    redirect("/admin/notices?status=notice-error");
   }
 
   revalidateNoticePaths();
   await refreshAdminSession();
+  redirect("/admin/notices?status=notice-saved");
 }
 
 export async function deleteNoticeAction(formData: FormData) {
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
-    return;
+    redirect("/admin/notices?status=notice-error");
   }
 
-  const supabase = getSupabaseAdminClient();
+  let supabase;
+
+  try {
+    supabase = getSupabaseAdminClient();
+  } catch {
+    redirect("/admin/notices?status=notice-error");
+  }
+
   const { error } = await supabase.from("notices").delete().eq("id", id);
 
   if (error) {
-    throw new Error(error.message);
+    redirect("/admin/notices?status=notice-error");
   }
 
   revalidateNoticePaths();
   await refreshAdminSession();
+  redirect("/admin/notices?status=notice-deleted");
 }

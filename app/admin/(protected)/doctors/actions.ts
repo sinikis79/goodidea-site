@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { refreshAdminSession } from "@/lib/admin/session";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 
@@ -12,11 +13,18 @@ function getFileExtension(file: File) {
 }
 
 export async function addDoctorImageAction(formData: FormData) {
-  const supabase = getSupabaseAdminClient();
+  let supabase;
+
+  try {
+    supabase = getSupabaseAdminClient();
+  } catch {
+    redirect("/admin/doctors?status=doctor-error");
+  }
+
   const image = formData.get("image");
 
   if (!(image instanceof File) || image.size === 0) {
-    return;
+    redirect("/admin/doctors?status=doctor-image-required");
   }
 
   const { count, error: countError } = await supabase
@@ -24,26 +32,30 @@ export async function addDoctorImageAction(formData: FormData) {
     .select("id", { count: "exact", head: true });
 
   if (countError) {
-    throw new Error(countError.message);
+    redirect("/admin/doctors?status=doctor-error");
   }
 
   if ((count ?? 0) >= MAX_DOCTORS) {
-    return;
+    redirect("/admin/doctors?status=doctor-limit");
   }
 
   const order = Number(formData.get("order") ?? (count ?? 0) + 1);
   const extension = getFileExtension(image);
   const filePath = `doctor-${Date.now()}.${extension}`;
 
-  const { error: uploadError } = await supabase.storage
-    .from("doctor-images")
-    .upload(filePath, image, {
-      contentType: image.type || "image/jpeg",
-      upsert: false,
-    });
+  try {
+    const { error: uploadError } = await supabase.storage
+      .from("doctor-images")
+      .upload(filePath, image, {
+        contentType: image.type || "image/jpeg",
+        upsert: false,
+      });
 
-  if (uploadError) {
-    throw new Error(uploadError.message);
+    if (uploadError) {
+      redirect("/admin/doctors?status=doctor-upload-error");
+    }
+  } catch {
+    redirect("/admin/doctors?status=doctor-upload-error");
   }
 
   const { data } = supabase.storage
@@ -62,20 +74,28 @@ export async function addDoctorImageAction(formData: FormData) {
   });
 
   if (insertError) {
-    throw new Error(insertError.message);
+    redirect("/admin/doctors?status=doctor-error");
   }
 
   revalidatePath("/doctors");
   revalidatePath("/admin/doctors");
   await refreshAdminSession();
+  redirect("/admin/doctors?status=doctor-created");
 }
 
 export async function updateDoctorImageMetaAction(formData: FormData) {
-  const supabase = getSupabaseAdminClient();
+  let supabase;
+
+  try {
+    supabase = getSupabaseAdminClient();
+  } catch {
+    redirect("/admin/doctors?status=doctor-error");
+  }
+
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
-    return;
+    redirect("/admin/doctors?status=doctor-error");
   }
 
   const { error } = await supabase
@@ -87,10 +107,11 @@ export async function updateDoctorImageMetaAction(formData: FormData) {
     .eq("id", id);
 
   if (error) {
-    throw new Error(error.message);
+    redirect("/admin/doctors?status=doctor-error");
   }
 
   revalidatePath("/doctors");
   revalidatePath("/admin/doctors");
   await refreshAdminSession();
+  redirect("/admin/doctors?status=doctor-saved");
 }

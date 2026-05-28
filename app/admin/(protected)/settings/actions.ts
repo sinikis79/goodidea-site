@@ -13,7 +13,14 @@ function getFileExtension(file: File) {
 }
 
 export async function saveOperatingHoursAction(formData: FormData) {
-  const supabase = getSupabaseAdminClient();
+  let supabase;
+
+  try {
+    supabase = getSupabaseAdminClient();
+  } catch {
+    redirect("/admin/settings?status=hours-error");
+  }
+
   const ids = formData.getAll("id").map(String);
 
   for (const id of ids) {
@@ -32,23 +39,31 @@ export async function saveOperatingHoursAction(formData: FormData) {
       .eq("id", id);
 
     if (error) {
-      throw new Error(error.message);
+      redirect("/admin/settings?status=hours-error");
     }
   }
 
   revalidatePath("/");
   revalidatePath("/admin/settings");
   await refreshAdminSession();
+  redirect("/admin/settings?status=hours-saved");
 }
 
 export async function addOperatingHourAction(formData: FormData) {
-  const supabase = getSupabaseAdminClient();
+  let supabase;
+
+  try {
+    supabase = getSupabaseAdminClient();
+  } catch {
+    redirect("/admin/settings?status=hours-error");
+  }
+
   const label = String(formData.get("label") ?? "").trim();
   const value = String(formData.get("value") ?? "").trim();
   const order = Number(formData.get("order") ?? 0);
 
   if (!label || !value) {
-    throw new Error("진료시간 라벨과 내용을 입력해주세요.");
+    redirect("/admin/settings?status=hours-required");
   }
 
   const { count, error: countError } = await supabase
@@ -56,11 +71,11 @@ export async function addOperatingHourAction(formData: FormData) {
     .select("id", { count: "exact", head: true });
 
   if (countError) {
-    throw new Error(countError.message);
+    redirect("/admin/settings?status=hours-error");
   }
 
   if ((count ?? 0) >= MAX_OPERATING_HOURS) {
-    throw new Error("진료시간은 최대 5줄까지 등록할 수 있습니다.");
+    redirect("/admin/settings?status=hours-limit");
   }
 
   const { error } = await supabase.from("operating_hours").insert({
@@ -71,16 +86,24 @@ export async function addOperatingHourAction(formData: FormData) {
   });
 
   if (error) {
-    throw new Error(error.message);
+    redirect("/admin/settings?status=hours-error");
   }
 
   revalidatePath("/");
   revalidatePath("/admin/settings");
   await refreshAdminSession();
+  redirect("/admin/settings?status=hours-saved");
 }
 
 export async function saveLocationSettingsAction(formData: FormData) {
-  const supabase = getSupabaseAdminClient();
+  let supabase;
+
+  try {
+    supabase = getSupabaseAdminClient();
+  } catch {
+    redirect("/admin/settings?status=location-save-error");
+  }
+
   const locationTitle = String(formData.get("location_title") ?? "").trim();
   const locationDescription = String(
     formData.get("location_description") ?? "",
@@ -92,22 +115,26 @@ export async function saveLocationSettingsAction(formData: FormData) {
   let locationImageUrl = currentImageUrl || null;
 
   if (!locationTitle) {
-    throw new Error("오시는 길 제목을 입력해주세요.");
+    redirect("/admin/settings?status=location-title-required");
   }
 
   if (image instanceof File && image.size > 0) {
     const extension = getFileExtension(image);
     const filePath = `location-${Date.now()}.${extension}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from("location-images")
-      .upload(filePath, image, {
-        contentType: image.type || "image/jpeg",
-        upsert: false,
-      });
+    try {
+      const { error: uploadError } = await supabase.storage
+        .from("location-images")
+        .upload(filePath, image, {
+          contentType: image.type || "image/jpeg",
+          upsert: false,
+        });
 
-    if (uploadError) {
-      throw new Error(uploadError.message);
+      if (uploadError) {
+        redirect("/admin/settings?status=location-upload-error");
+      }
+    } catch {
+      redirect("/admin/settings?status=location-upload-error");
     }
 
     const { data } = supabase.storage
@@ -117,18 +144,22 @@ export async function saveLocationSettingsAction(formData: FormData) {
     locationImageUrl = data.publicUrl;
   }
 
-  const { error } = await supabase
-    .from("hospital_settings")
-    .update({
-      location_title: locationTitle,
-      location_description: locationDescription,
-      location_image_url: locationImageUrl,
-      location_image_alt: locationImageUrl ? "오시는 길 지도 이미지" : null,
-    })
-    .eq("id", 1);
+  try {
+    const { error } = await supabase
+      .from("hospital_settings")
+      .update({
+        location_title: locationTitle,
+        location_description: locationDescription,
+        location_image_url: locationImageUrl,
+        location_image_alt: locationImageUrl ? "오시는 길 지도 이미지" : null,
+      })
+      .eq("id", 1);
 
-  if (error) {
-    throw new Error(error.message);
+    if (error) {
+      redirect("/admin/settings?status=location-save-error");
+    }
+  } catch {
+    redirect("/admin/settings?status=location-save-error");
   }
 
   revalidatePath("/");

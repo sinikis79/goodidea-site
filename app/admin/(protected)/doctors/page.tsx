@@ -25,8 +25,36 @@ async function getDoctors(): Promise<AdminDoctor[]> {
   }
 }
 
-export default async function AdminDoctorsPage() {
+type AdminDoctorsPageProps = {
+  searchParams?: Promise<{
+    status?: string;
+  }>;
+};
+
+const statusMessage: Record<string, string> = {
+  "doctor-created": "의료진 이미지가 저장되었습니다.",
+  "doctor-saved": "의료진 이미지 설정이 저장되었습니다.",
+  "doctor-image-required": "의료진 소개 이미지를 선택해주세요.",
+  "doctor-limit": "의료진 소개 이미지는 최대 4개까지 등록할 수 있습니다.",
+  "doctor-upload-error":
+    "의료진 이미지 업로드에 실패했습니다. 이미지 용량과 Supabase Storage 설정을 확인해주세요.",
+  "doctor-error": "의료진 정보 저장에 실패했습니다. 잠시 후 다시 시도해주세요.",
+};
+
+const errorStatuses = new Set([
+  "doctor-image-required",
+  "doctor-limit",
+  "doctor-upload-error",
+  "doctor-error",
+]);
+
+export default async function AdminDoctorsPage({
+  searchParams,
+}: AdminDoctorsPageProps) {
   const doctors = await getDoctors();
+  const params = await searchParams;
+  const message = params?.status ? statusMessage[params.status] : null;
+  const isError = params?.status ? errorStatuses.has(params.status) : false;
   const canAddMore = doctors.length < 4;
 
   return (
@@ -44,6 +72,18 @@ export default async function AdminDoctorsPage() {
           </p>
         </div>
       </div>
+
+      {message ? (
+        <div
+          className={`mb-4 rounded-xl border px-5 py-3 text-[13px] font-black ${
+            isError
+              ? "border-[#f0d7c8] bg-[#fff3ed] text-[#b06a45]"
+              : "border-[#d9e6d2] bg-[#f3f8ef] text-[#58724a]"
+          }`}
+        >
+          {message}
+        </div>
+      ) : null}
 
       <form
         action={addDoctorImageAction}

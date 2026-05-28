@@ -45,8 +45,37 @@ async function getAdminNotices(): Promise<AdminNotice[]> {
   }
 }
 
-export default async function AdminNoticesPage() {
+type AdminNoticesPageProps = {
+  searchParams?: Promise<{
+    status?: string;
+  }>;
+};
+
+const statusMessage: Record<string, string> = {
+  "notice-created": "공지사항이 저장되었습니다.",
+  "notice-saved": "공지사항 변경사항이 저장되었습니다.",
+  "notice-deleted": "공지사항이 삭제되었습니다.",
+  "notice-required": "공지 제목과 내용을 입력해주세요.",
+  "notice-image-required": "공지 제목과 이미지 파일을 선택해주세요.",
+  "notice-upload-error":
+    "공지 이미지 업로드에 실패했습니다. 이미지 용량과 Supabase Storage 설정을 확인해주세요.",
+  "notice-error": "공지사항 저장에 실패했습니다. 잠시 후 다시 시도해주세요.",
+};
+
+const errorStatuses = new Set([
+  "notice-required",
+  "notice-image-required",
+  "notice-upload-error",
+  "notice-error",
+]);
+
+export default async function AdminNoticesPage({
+  searchParams,
+}: AdminNoticesPageProps) {
   const notices = await getAdminNotices();
+  const params = await searchParams;
+  const message = params?.status ? statusMessage[params.status] : null;
+  const isError = params?.status ? errorStatuses.has(params.status) : false;
 
   return (
     <div>
@@ -63,6 +92,18 @@ export default async function AdminNoticesPage() {
           </p>
         </div>
       </div>
+
+      {message ? (
+        <div
+          className={`mb-4 rounded-xl border px-5 py-3 text-[13px] font-black ${
+            isError
+              ? "border-[#f0d7c8] bg-[#fff3ed] text-[#b06a45]"
+              : "border-[#d9e6d2] bg-[#f3f8ef] text-[#58724a]"
+          }`}
+        >
+          {message}
+        </div>
+      ) : null}
 
       <div className="mb-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
         <form

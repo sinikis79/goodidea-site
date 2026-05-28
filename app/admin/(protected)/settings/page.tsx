@@ -83,8 +83,25 @@ type AdminSettingsPageProps = {
 };
 
 const statusMessage: Record<string, string> = {
+  "hours-saved": "진료시간이 저장되었습니다.",
+  "hours-required": "진료시간 라벨과 내용을 입력해주세요.",
+  "hours-limit": "진료시간은 최대 5줄까지 등록할 수 있습니다.",
+  "hours-error": "진료시간 저장에 실패했습니다. 잠시 후 다시 시도해주세요.",
   "location-saved": "오시는 길 정보가 저장되었습니다.",
+  "location-title-required": "오시는 길 제목을 입력해주세요.",
+  "location-upload-error":
+    "지도 이미지 업로드에 실패했습니다. 이미지 용량과 Supabase Storage 설정을 확인해주세요.",
+  "location-save-error": "오시는 길 정보 저장에 실패했습니다.",
 };
+
+const errorStatuses = new Set([
+  "hours-required",
+  "hours-limit",
+  "hours-error",
+  "location-title-required",
+  "location-upload-error",
+  "location-save-error",
+]);
 
 export default async function AdminSettingsPage({
   searchParams,
@@ -93,6 +110,7 @@ export default async function AdminSettingsPage({
   const operatingHours = await getOperatingHours();
   const params = await searchParams;
   const message = params?.status ? statusMessage[params.status] : null;
+  const isError = params?.status ? errorStatuses.has(params.status) : false;
   const canAddOperatingHour = operatingHours.length < 5;
 
   return (
@@ -107,7 +125,13 @@ export default async function AdminSettingsPage({
       </div>
 
       {message ? (
-        <div className="mb-4 rounded-xl border border-[#d9e6d2] bg-[#f3f8ef] px-5 py-3 text-[13px] font-black text-[#58724a]">
+        <div
+          className={`mb-4 rounded-xl border px-5 py-3 text-[13px] font-black ${
+            isError
+              ? "border-[#f0d7c8] bg-[#fff3ed] text-[#b06a45]"
+              : "border-[#d9e6d2] bg-[#f3f8ef] text-[#58724a]"
+          }`}
+        >
           {message}
         </div>
       ) : null}
