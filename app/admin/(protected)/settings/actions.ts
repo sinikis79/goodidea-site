@@ -107,8 +107,16 @@ export async function saveLocationSettingsAction(formData: FormData) {
   const currentImageUrl = String(
     formData.get("current_location_image_url") ?? "",
   ).trim();
+  const locationTitle = String(formData.get("location_title") ?? "").trim();
+  const locationDescription = String(
+    formData.get("location_description") ?? "",
+  ).trim();
   const image = formData.get("location_image");
   let locationImageUrl = currentImageUrl || null;
+
+  if (!locationTitle || !locationDescription) {
+    redirect("/admin/settings?status=location-text-required");
+  }
 
   if (image instanceof File && image.size > 0) {
     const extension = getFileExtension(image);
@@ -144,6 +152,8 @@ export async function saveLocationSettingsAction(formData: FormData) {
     const { error } = await supabase
       .from("hospital_settings")
       .update({
+        location_title: locationTitle,
+        location_description: locationDescription,
         location_image_url: locationImageUrl,
         location_image_alt: "오시는 길 지도 이미지",
       })

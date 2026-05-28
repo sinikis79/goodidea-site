@@ -57,7 +57,7 @@ async function getHospitalSettings(): Promise<HospitalSettings> {
     const { data, error } = await supabase
       .from("hospital_settings")
       .select(
-        "name,address,phone,fax,hours_weekday,hours_saturday,hours_sunday,hours_lunch,kakao_url,naver_map_url,location_description,location_image_url,location_image_alt,description",
+        "name,address,phone,fax,hours_weekday,hours_saturday,hours_sunday,hours_lunch,kakao_url,naver_map_url,location_title,location_description,location_image_url,location_image_alt,description",
       )
       .eq("id", 1)
       .single();
@@ -69,7 +69,9 @@ async function getHospitalSettings(): Promise<HospitalSettings> {
     return {
       ...mockSettings,
       ...data,
-      location_title: mockSettings.location_title,
+      location_title: data.location_title || mockSettings.location_title,
+      location_description:
+        data.location_description || mockSettings.location_description,
     };
   } catch {
     return mockSettings;
@@ -87,17 +89,19 @@ const statusMessage: Record<string, string> = {
   "hours-required": "진료시간 라벨과 내용을 입력해주세요.",
   "hours-limit": "진료시간은 최대 5줄까지 등록할 수 있습니다.",
   "hours-error": "진료시간 저장에 실패했습니다. 잠시 후 다시 시도해주세요.",
-  "location-saved": "지도 이미지가 저장되었습니다.",
+  "location-saved": "오시는 길 정보가 저장되었습니다.",
+  "location-text-required": "오시는 길 제목과 설명글을 입력해주세요.",
   "location-image-required": "저장할 지도 이미지를 선택해주세요.",
   "location-upload-error":
     "지도 이미지 업로드에 실패했습니다. 이미지 용량과 Supabase Storage 설정을 확인해주세요.",
-  "location-save-error": "지도 이미지 저장에 실패했습니다.",
+  "location-save-error": "오시는 길 저장에 실패했습니다.",
 };
 
 const errorStatuses = new Set([
   "hours-required",
   "hours-limit",
   "hours-error",
+  "location-text-required",
   "location-image-required",
   "location-upload-error",
   "location-save-error",
@@ -288,6 +292,27 @@ export default async function AdminSettingsPage({
               name="current_location_image_url"
               value={s.location_image_url ?? ""}
             />
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-black text-[#a89e90]">
+                제목
+              </span>
+              <input
+                name="location_title"
+                defaultValue={s.location_title}
+                className="h-11 rounded-xl border border-[#ded5ca] bg-[#f8f4ed] px-3 text-[13px] font-bold text-[#2b2a28] outline-none focus:border-[#b7a38f]"
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-black text-[#a89e90]">
+                설명글
+              </span>
+              <textarea
+                name="location_description"
+                defaultValue={s.location_description}
+                rows={4}
+                className="rounded-xl border border-[#ded5ca] bg-[#f8f4ed] px-3 py-3 text-[13px] font-bold leading-7 text-[#2b2a28] outline-none focus:border-[#b7a38f]"
+              />
+            </label>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_240px] lg:items-start">
               <label className="flex flex-col gap-1.5">
                 <span className="text-[11px] font-black text-[#a89e90]">
@@ -324,7 +349,7 @@ export default async function AdminSettingsPage({
               type="submit"
               className="self-start rounded-xl bg-[#5f5146] px-5 py-2.5 text-[13px] font-black text-white transition hover:bg-[#4d4138]"
             >
-              지도 이미지 저장
+              오시는 길 저장
             </button>
           </form>
         </section>
@@ -333,7 +358,7 @@ export default async function AdminSettingsPage({
 
       <div className="mt-6 rounded-xl border border-[#f0e8d8] bg-[#fdf6ec] px-5 py-3.5">
         <p className="text-[12px] font-bold text-[#b89060]">
-          진료시간과 지도 이미지는 Supabase에 저장됩니다. 병원 정보와 외부 링크 수정은 다음 단계에서 연결됩니다.
+          진료시간과 오시는 길 정보는 Supabase에 저장됩니다. 병원 정보와 외부 링크 수정은 다음 단계에서 연결됩니다.
         </p>
       </div>
     </div>
