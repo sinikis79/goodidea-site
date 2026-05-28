@@ -9,6 +9,7 @@ import { getPublicHospitalSettings } from "@/lib/hospital-settings";
 import { getPublicInteriorImages } from "@/lib/interior-images";
 import { getPublicOperatingHours } from "@/lib/operating-hours";
 
+export const dynamic = "force-dynamic";
 
 const services = [
   {

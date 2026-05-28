@@ -63,9 +63,9 @@ export async function getPublicInteriorImages() {
     .order("order", { ascending: true })
     .limit(12);
 
-  if (error || !data?.length) {
+  if (error) {
     return fallbackInteriorImages;
   }
 
-  return data;
+  return data ?? [];
 }

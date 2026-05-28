@@ -39,6 +39,8 @@ export default function InteriorPreviewSection({
     return () => window.clearInterval(intervalId);
   }, [images.length, reducedMotion]);
 
+  const hasImages = images.length > 0;
+
   return (
     <section
       id="interior"
@@ -59,76 +61,91 @@ export default function InteriorPreviewSection({
 
         <div className="overflow-hidden rounded-3xl border border-[#e6ded4] bg-[#fffcf7]/92 shadow-[0_16px_42px_rgba(73,64,55,0.045)]">
           <div className="relative aspect-[16/10] overflow-hidden sm:aspect-[16/8] lg:aspect-[16/10]">
-            <div
-              className={`flex h-full ${
-                reducedMotion
-                  ? ""
-                  : "transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-              }`}
-              style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-            >
-              {images.map((image, index) => {
-                const hasImageError = failedImages.has(index);
-
-                return (
-                  <div
-                    key={image.id}
-                    className="relative h-full min-w-full bg-[#f3eee5]"
-                  >
-                    {!hasImageError && (
-                      <Image
-                        src={image.image_url}
-                        alt={
-                          image.image_alt ||
-                          `판교다시봄 정신건강의학과 내부 공간 ${index + 1}`
-                        }
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 62vw"
-                        unoptimized
-                        className="object-cover"
-                        onError={() => {
-                          setFailedImages((current) => {
-                            const next = new Set(current);
-                            next.add(index);
-                            return next;
-                          });
-                        }}
-                      />
-                    )}
-
-                    {hasImageError && (
-                      <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,#fffaf2,#efe5d7)] px-6 text-center">
-                        <div>
-                          <p className="text-[0.78rem] font-black tracking-[0.16em] text-[#9a8067]">
-                            COMING SOON
-                          </p>
-                          <p className="mt-3 text-[1.15rem] font-black text-[#5f5146] sm:text-[1.35rem]">
-                            사진 준비 중입니다
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center gap-2 px-5 py-3 sm:py-4">
-            {images.map((image, index) => (
-              <button
-                key={image.id}
-                type="button"
-                aria-label={`병원 둘러보기 ${index + 1}번째 사진 보기`}
-                onClick={() => setActiveIndex(index)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  activeIndex === index
-                    ? "w-6 bg-[#8a6a4f]"
-                    : "w-1.5 bg-[#d8cec2] hover:bg-[#b9aa9b]"
+            {hasImages ? (
+              <div
+                className={`flex h-full ${
+                  reducedMotion
+                    ? ""
+                    : "transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                 }`}
-              />
-            ))}
+                style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+              >
+                {images.map((image, index) => {
+                  const hasImageError = failedImages.has(index);
+
+                  return (
+                    <div
+                      key={image.id}
+                      className="relative h-full min-w-full bg-[#f3eee5]"
+                    >
+                      {!hasImageError && (
+                        <Image
+                          src={image.image_url}
+                          alt={
+                            image.image_alt ||
+                            `판교다시봄 정신건강의학과 내부 공간 ${index + 1}`
+                          }
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 62vw"
+                          unoptimized
+                          className="object-cover"
+                          onError={() => {
+                            setFailedImages((current) => {
+                              const next = new Set(current);
+                              next.add(index);
+                              return next;
+                            });
+                          }}
+                        />
+                      )}
+
+                      {hasImageError && (
+                        <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,#fffaf2,#efe5d7)] px-6 text-center">
+                          <div>
+                            <p className="text-[0.78rem] font-black tracking-[0.16em] text-[#9a8067]">
+                              COMING SOON
+                            </p>
+                            <p className="mt-3 text-[1.15rem] font-black text-[#5f5146] sm:text-[1.35rem]">
+                              사진 준비 중입니다
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,#fffaf2,#efe5d7)] px-6 text-center">
+                <div>
+                  <p className="text-[0.78rem] font-black tracking-[0.16em] text-[#9a8067]">
+                    COMING SOON
+                  </p>
+                  <p className="mt-3 text-[1.15rem] font-black text-[#5f5146] sm:text-[1.35rem]">
+                    사진 준비 중입니다
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
+
+          {hasImages ? (
+            <div className="flex items-center justify-center gap-2 px-5 py-3 sm:py-4">
+              {images.map((image, index) => (
+                <button
+                  key={image.id}
+                  type="button"
+                  aria-label={`병원 둘러보기 ${index + 1}번째 사진 보기`}
+                  onClick={() => setActiveIndex(index)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    activeIndex === index
+                      ? "w-6 bg-[#8a6a4f]"
+                      : "w-1.5 bg-[#d8cec2] hover:bg-[#b9aa9b]"
+                  }`}
+                />
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

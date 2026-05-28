@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { refreshAdminSession, requireAdminSession } from "@/lib/admin/session";
+import { refreshAdminSession } from "@/lib/admin/session";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 
 const MAX_OPERATING_HOURS = 5;
@@ -13,8 +13,6 @@ function getFileExtension(file: File) {
 }
 
 export async function saveOperatingHoursAction(formData: FormData) {
-  await requireAdminSession();
-
   const supabase = getSupabaseAdminClient();
   const ids = formData.getAll("id").map(String);
 
@@ -44,8 +42,6 @@ export async function saveOperatingHoursAction(formData: FormData) {
 }
 
 export async function addOperatingHourAction(formData: FormData) {
-  await requireAdminSession();
-
   const supabase = getSupabaseAdminClient();
   const label = String(formData.get("label") ?? "").trim();
   const value = String(formData.get("value") ?? "").trim();
@@ -84,8 +80,6 @@ export async function addOperatingHourAction(formData: FormData) {
 }
 
 export async function saveLocationSettingsAction(formData: FormData) {
-  await requireAdminSession();
-
   const supabase = getSupabaseAdminClient();
   const locationTitle = String(formData.get("location_title") ?? "").trim();
   const locationDescription = String(
