@@ -190,10 +190,10 @@ export default async function Home() {
         </style>
         <div className="mx-auto flex max-w-[1400px] justify-center">
           <Image
-            src="/images/common/logo-wordmark.png"
+            src="/images/common/logoA-transparent.png"
             alt="판교다시봄 정신건강의학과"
-            width={760}
-            height={180}
+            width={1256}
+            height={352}
             className="brand-divider-logo h-auto w-[280px] opacity-50 sm:w-[360px]"
           />
         </div>

@@ -2,6 +2,7 @@ import "server-only";
 
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const ADMIN_SESSION_COOKIE = "dasibom_admin_session";
 
@@ -85,4 +86,15 @@ export async function hasAdminSession() {
   const sessionCookie = cookieStore.get(ADMIN_SESSION_COOKIE);
 
   return verifyAdminSessionValue(sessionCookie?.value);
+}
+
+export async function requireAdminSession() {
+  if (!(await hasAdminSession())) {
+    redirect("/admin/login");
+  }
+}
+
+export async function refreshAdminSession() {
+  const cookieStore = await cookies();
+  cookieStore.set(createAdminSessionCookie());
 }

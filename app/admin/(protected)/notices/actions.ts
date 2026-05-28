@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { refreshAdminSession, requireAdminSession } from "@/lib/admin/session";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 
 function revalidateNoticePaths() {
@@ -11,6 +12,8 @@ function revalidateNoticePaths() {
 }
 
 export async function createTextNoticeAction(formData: FormData) {
+  await requireAdminSession();
+
   const title = String(formData.get("title") ?? "").trim();
   const content = String(formData.get("content") ?? "").trim();
   const category = String(formData.get("category") ?? "general");
@@ -36,6 +39,7 @@ export async function createTextNoticeAction(formData: FormData) {
   }
 
   revalidateNoticePaths();
+  await refreshAdminSession();
 }
 
 function getFileExtension(file: File) {
@@ -44,6 +48,8 @@ function getFileExtension(file: File) {
 }
 
 export async function createImageNoticeAction(formData: FormData) {
+  await requireAdminSession();
+
   const title = String(formData.get("title") ?? "").trim();
   const content = String(formData.get("content") ?? "").trim();
   const category = String(formData.get("category") ?? "general");
@@ -90,9 +96,12 @@ export async function createImageNoticeAction(formData: FormData) {
   }
 
   revalidateNoticePaths();
+  await refreshAdminSession();
 }
 
 export async function updateNoticeStatusAction(formData: FormData) {
+  await requireAdminSession();
+
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
@@ -114,9 +123,12 @@ export async function updateNoticeStatusAction(formData: FormData) {
   }
 
   revalidateNoticePaths();
+  await refreshAdminSession();
 }
 
 export async function deleteNoticeAction(formData: FormData) {
+  await requireAdminSession();
+
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
@@ -131,4 +143,5 @@ export async function deleteNoticeAction(formData: FormData) {
   }
 
   revalidateNoticePaths();
+  await refreshAdminSession();
 }

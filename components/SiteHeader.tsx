@@ -91,20 +91,12 @@ export default function SiteHeader() {
           }}
         >
           <Image
-            src="/images/common/logo-symbol.png"
-            alt=""
-            width={160}
-            height={160}
-            priority
-            className="h-[48px] w-[48px] shrink-0 object-contain"
-          />
-          <Image
-            src="/images/common/logo-wordmark.png"
+            src="/images/common/logoA-transparent-tight.png"
             alt="판교다시봄 정신건강의학과"
-            width={760}
-            height={180}
+            width={1060}
+            height={240}
             priority
-            className="h-[50px] w-[330px] max-w-[calc(100vw-120px)] object-contain object-left sm:w-[360px]"
+            className="h-[56px] w-auto max-w-[calc(100vw-92px)] object-contain object-left sm:h-[60px]"
           />
         </Link>
 
