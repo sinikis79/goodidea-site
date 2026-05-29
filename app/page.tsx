@@ -120,6 +120,8 @@ export default async function Home() {
           loop
           muted
           playsInline
+          poster="/images/hero/hero-poster.jpg"
+          preload="auto"
         >
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
@@ -138,9 +140,9 @@ export default async function Home() {
             <h1 className="mx-auto mt-5 max-w-[10.5em] text-balance text-[1.86rem] font-extrabold leading-[1.28] tracking-[0.01em] text-[#fffaf2] sm:mt-7 sm:text-[2.95rem] sm:leading-[1.22] lg:text-[4rem] lg:leading-[1.16]">
               <TypingText
                 text={"당신의 마음에도\n다시 봄이 올 수 있도록"}
-                charDelayMs={120}
-                startDelayMs={640}
-                lineBreakPauseMs={560}
+                charDelayMs={92}
+                startDelayMs={490}
+                lineBreakPauseMs={430}
               />
             </h1>
             <div className="hero-reveal mx-auto mt-7 flex max-w-[310px] flex-col gap-2.5 [animation-delay:1500ms] sm:max-w-none sm:flex-row sm:justify-center">
@@ -208,13 +210,52 @@ export default async function Home() {
       <InteriorPreviewSection images={interiorImages} />
       <NoticeSection />
 
+      <style>
+        {`
+          @keyframes about-image-fade-up {
+            from {
+              opacity: 0;
+              transform: translate3d(0, 28px, 0);
+            }
+            to {
+              opacity: 1;
+              transform: translate3d(0, 0, 0);
+            }
+          }
+
+          .about-image-reveal {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+          }
+
+          @supports (animation-timeline: view()) {
+            @media (prefers-reduced-motion: no-preference) {
+              .about-image-reveal {
+                opacity: 0;
+                transform: translate3d(0, 28px, 0);
+                animation: about-image-fade-up 880ms cubic-bezier(0.19, 1, 0.22, 1) both;
+                animation-range: entry 14% cover 38%;
+                animation-timeline: view();
+              }
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .about-image-reveal {
+              opacity: 1;
+              transform: none;
+              animation: none;
+            }
+          }
+        `}
+      </style>
       <section
         id="about"
         className="mx-auto grid max-w-[1400px] gap-8 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:gap-12"
       >
         <div className="max-w-[680px]">
           <p className="text-[13px] font-black tracking-[0.08em] text-[#8a8073]">
-            병원소개
+            다시봄 정신건강의학과
           </p>
           <h2 className="mt-4 text-[1.85rem] font-black leading-[1.28] tracking-tight text-[#2b2a28] sm:text-[2.35rem] sm:leading-[1.24] lg:text-[2.65rem]">
             아무도 몰랐던 마음 깊은 곳까지,
@@ -235,13 +276,13 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="relative overflow-hidden rounded-3xl border border-[#ded5ca] bg-[#fffcf7] shadow-[0_18px_42px_rgba(73,64,55,0.055)]">
+        <div className="about-image-reveal group relative overflow-hidden rounded-3xl border border-[#ded5ca] bg-[#fffcf7] shadow-[0_18px_42px_rgba(73,64,55,0.055)] transition-shadow duration-700 hover:shadow-[0_24px_58px_rgba(73,64,55,0.085)] will-change-transform">
           <Image
             src="/images/about/about-hero.png"
             alt="판교다시봄 정신건강의학과 병원 소개 이미지"
             width={1200}
             height={960}
-            className="aspect-[4/3] w-full object-cover lg:aspect-[5/4]"
+            className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.018] lg:aspect-[5/4]"
           />
         </div>
       </section>
@@ -342,7 +383,7 @@ export default async function Home() {
           </div>
 
           {hospitalSettings.location_image_url ? (
-            <div className="overflow-hidden rounded-2xl border border-[#e5ddd4] bg-[#f8f5f1] shadow-[0_18px_42px_rgba(73,64,55,0.06)]">
+            <div className="group overflow-hidden rounded-2xl border border-[#e5ddd4] bg-[#f8f5f1] shadow-[0_18px_42px_rgba(73,64,55,0.06)]">
               <Image
                 src={hospitalSettings.location_image_url}
                 alt={
@@ -351,7 +392,7 @@ export default async function Home() {
                 width={960}
                 height={640}
                 unoptimized
-                className="aspect-[3/2] w-full object-contain"
+                className="aspect-[3/2] w-full object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
               />
             </div>
           ) : (

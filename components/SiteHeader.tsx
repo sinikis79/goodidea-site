@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { type MouseEvent, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,7 +14,7 @@ const getNavGroups = (phoneHref: string) => [
     key: "about",
     label: "병원소개",
     items: [
-      { label: "병원소개", href: "/#about" },
+      { label: "다시봄 정신건강의학과", href: "/#about" },
       { label: "의료진 소개", href: "/doctors" },
       { label: "병원 둘러보기", href: "/#interior" },
     ],
@@ -66,6 +66,22 @@ export default function SiteHeader({ phoneHref = DEFAULT_PHONE_HREF }: SiteHeade
 
   const isGroupActive = (items: { href: string }[]) =>
     items.some((item) => isActivePath(item.href));
+
+  const handleHashLinkClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    setActiveMenu(null);
+
+    if (!href.startsWith("/#") || pathname !== "/") return;
+
+    const target = document.getElementById(href.slice(2));
+    if (!target) return;
+
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.pushState(null, "", href);
+  };
 
   useEffect(() => {
     function onScroll() {
@@ -164,7 +180,7 @@ export default function SiteHeader({ phoneHref = DEFAULT_PHONE_HREF }: SiteHeade
                     <Link
                       key={item.label}
                       href={item.href}
-                      onClick={() => setActiveMenu(null)}
+                      onClick={(event) => handleHashLinkClick(event, item.href)}
                       className={itemClassName}
                     >
                       {item.label}
@@ -203,7 +219,7 @@ export default function SiteHeader({ phoneHref = DEFAULT_PHONE_HREF }: SiteHeade
                 href={item.href}
                 onMouseEnter={() => setActiveMenu(null)}
                 onFocus={() => setActiveMenu(null)}
-                onClick={() => setActiveMenu(null)}
+                onClick={(event) => handleHashLinkClick(event, item.href)}
                 className={itemClassName}
               >
                 {item.label}

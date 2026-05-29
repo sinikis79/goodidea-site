@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type MouseEvent, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -41,6 +41,22 @@ export default function MobileMenu({ items }: MobileMenuProps) {
 
   const closeMenu = () => {
     setIsOpen(false);
+  };
+
+  const handleHashLinkClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    closeMenu();
+
+    if (!href.startsWith("/#") || pathname !== "/") return;
+
+    const target = document.getElementById(href.slice(2));
+    if (!target) return;
+
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.pushState(null, "", href);
   };
 
   useEffect(() => {
@@ -138,7 +154,7 @@ export default function MobileMenu({ items }: MobileMenuProps) {
                         <Link
                           key={child.label}
                           href={child.href}
-                          onClick={closeMenu}
+                          onClick={(event) => handleHashLinkClick(event, child.href)}
                           className={childClassName}
                         >
                           {child.label}
@@ -173,7 +189,7 @@ export default function MobileMenu({ items }: MobileMenuProps) {
               <Link
                 key={item.label}
                 href={item.href}
-                onClick={closeMenu}
+                onClick={(event) => handleHashLinkClick(event, item.href)}
                 className={itemClassName}
               >
                 {item.label}
