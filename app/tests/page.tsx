@@ -7,7 +7,33 @@ export default function TestsPage() {
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
       <SiteHeader />
       <section className="mx-auto max-w-[1400px] px-5 py-12 sm:px-8 sm:py-20">
-        <div className="overflow-hidden rounded-3xl border border-[#e5ddd4] bg-[#fffcf7] shadow-[0_18px_42px_rgba(73,64,55,0.06)]">
+        <style>
+          {`
+            @keyframes tests-image-fade-up {
+              from {
+                opacity: 0;
+                transform: translate3d(0, 28px, 0);
+              }
+              to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+              }
+            }
+
+            .tests-image-reveal {
+              animation: tests-image-fade-up 1290ms cubic-bezier(0.19, 1, 0.22, 1) 120ms both;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+              .tests-image-reveal {
+                opacity: 1;
+                transform: none;
+                animation: none;
+              }
+            }
+          `}
+        </style>
+        <div className="tests-image-reveal overflow-hidden rounded-3xl border border-[#e5ddd4] bg-[#fffcf7] shadow-[0_18px_42px_rgba(73,64,55,0.06)] will-change-transform">
           <Image
             src="/images/tests/tests-overview.png"
             alt="검사항목 안내"
