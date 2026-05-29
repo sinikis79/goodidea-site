@@ -276,13 +276,13 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="about-image-reveal group relative overflow-hidden rounded-3xl border border-[#ded5ca] bg-[#fffcf7] shadow-[0_18px_42px_rgba(73,64,55,0.055)] transition-shadow duration-700 hover:shadow-[0_24px_58px_rgba(73,64,55,0.085)] will-change-transform">
+        <div className="about-image-reveal group relative overflow-hidden rounded-3xl border border-[#ded5ca] bg-[#fffcf7] shadow-[0_18px_42px_rgba(73,64,55,0.055)] transition-shadow duration-700 hover:shadow-[0_26px_64px_rgba(73,64,55,0.10)] will-change-transform">
           <Image
             src="/images/about/about-hero.png"
             alt="판교다시봄 정신건강의학과 병원 소개 이미지"
             width={1200}
             height={960}
-            className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.018] lg:aspect-[5/4]"
+            className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.035] lg:aspect-[5/4]"
           />
         </div>
       </section>
@@ -392,7 +392,7 @@ export default async function Home() {
                 width={960}
                 height={640}
                 unoptimized
-                className="aspect-[3/2] w-full object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.025]"
+                className="aspect-[3/2] w-full object-contain transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
               />
             </div>
           ) : (
