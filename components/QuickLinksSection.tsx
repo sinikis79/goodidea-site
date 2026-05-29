@@ -1,5 +1,7 @@
 import { DEFAULT_PHONE_HREF } from "@/lib/phone";
 
+const BLOG_URL = "https://blog.naver.com/PostList.naver?blogId=mindagain";
+
 const getQuickLinks = (phoneHref: string) => [
   {
     title: "전화 상담",
@@ -22,7 +24,7 @@ const getQuickLinks = (phoneHref: string) => [
   {
     title: "블로그",
     description: "병원 소식과 이야기를 확인하세요.",
-    href: "#",
+    href: BLOG_URL,
     icon: "news",
   },
 ];

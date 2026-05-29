@@ -7,7 +7,7 @@ import MobileMenu from "@/components/MobileMenu";
 import { DEFAULT_PHONE_HREF } from "@/lib/phone";
 
 const KAKAO_CHANNEL_URL = "https://pf.kakao.com/_xxxxxx/chat";
-const BLOG_URL = "#";
+const BLOG_URL = "https://blog.naver.com/PostList.naver?blogId=mindagain";
 
 const getNavGroups = (phoneHref: string) => [
   {
@@ -175,22 +175,41 @@ export default function SiteHeader({ phoneHref = DEFAULT_PHONE_HREF }: SiteHeade
             </div>
           ))}
 
-          {standaloneNavItems.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              onMouseEnter={() => setActiveMenu(null)}
-              onFocus={() => setActiveMenu(null)}
-              onClick={() => setActiveMenu(null)}
-              className={`transition ${
-                isActivePath(item.href)
-                  ? "text-[#2b2a28]"
-                  : "text-[#7b786f] hover:text-[#2b2a28]"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {standaloneNavItems.map((item) => {
+            const itemClassName = `transition ${
+              isActivePath(item.href)
+                ? "text-[#2b2a28]"
+                : "text-[#7b786f] hover:text-[#2b2a28]"
+            }`;
+
+            if (isExternalHref(item.href)) {
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onMouseEnter={() => setActiveMenu(null)}
+                  onFocus={() => setActiveMenu(null)}
+                  onClick={() => setActiveMenu(null)}
+                  className={itemClassName}
+                >
+                  {item.label}
+                </a>
+              );
+            }
+
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                onMouseEnter={() => setActiveMenu(null)}
+                onFocus={() => setActiveMenu(null)}
+                onClick={() => setActiveMenu(null)}
+                className={itemClassName}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="lg:hidden">

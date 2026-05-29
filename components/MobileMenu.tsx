@@ -150,16 +150,31 @@ export default function MobileMenu({ items }: MobileMenuProps) {
               );
             }
 
+            const itemClassName = `mx-2 flex items-center justify-between rounded-xl px-3 py-1.5 text-[15px] font-black tracking-normal transition ${
+              isActivePath(item.href)
+                ? "bg-[#f3eee5]/70 text-[#8a5f42]"
+                : "text-[#8a5f42] hover:bg-[#f3eee5]/55 active:bg-[#eee7dc]"
+            }`;
+
+            if (isExternalHref(item.href)) {
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={closeMenu}
+                  className={itemClassName}
+                >
+                  {item.label}
+                </a>
+              );
+            }
+
             return (
               <Link
                 key={item.label}
                 href={item.href}
                 onClick={closeMenu}
-                className={`mx-2 flex items-center justify-between rounded-xl px-3 py-1.5 text-[15px] font-black tracking-normal transition ${
-                  isActivePath(item.href)
-                    ? "bg-[#f3eee5]/70 text-[#8a5f42]"
-                    : "text-[#8a5f42] hover:bg-[#f3eee5]/55 active:bg-[#eee7dc]"
-                }`}
+                className={itemClassName}
               >
                 {item.label}
               </Link>
