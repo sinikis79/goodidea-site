@@ -26,6 +26,7 @@ const getNavGroups = (phoneHref: string) => [
       { label: "진료과목", href: "/#services" },
       { label: "진료과정", href: "/care/process" },
       { label: "검사항목", href: "/tests" },
+      { label: "운영시간", href: "/#hours" },
     ],
   },
   {

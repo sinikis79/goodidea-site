@@ -259,7 +259,7 @@ export default async function Home() {
           </p>
           <h2 className="mt-4 text-[1.85rem] font-black leading-[1.28] tracking-tight text-[#2b2a28] sm:text-[2.35rem] sm:leading-[1.24] lg:text-[2.65rem]">
             아무도 몰랐던 마음 깊은 곳까지,
-            <br className="hidden sm:block" />
+            <br />
             따뜻하게 바라봅니다.
           </h2>
           <div className="mt-6 space-y-5 text-[1.02rem] leading-8 text-[#6f6258] sm:text-[1.08rem] sm:leading-9">
