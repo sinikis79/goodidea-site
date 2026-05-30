@@ -35,7 +35,7 @@ export default function TestsPage() {
         </style>
         <div className="tests-image-reveal overflow-hidden rounded-3xl border border-[#e5ddd4] bg-[#fffcf7] shadow-[0_18px_42px_rgba(73,64,55,0.06)] will-change-transform">
           <Image
-            src="/images/tests/tests-overview.png"
+            src="/images/tests/tests-overview-v2.png"
             alt="검사항목 안내"
             width={1536}
             height={1024}
