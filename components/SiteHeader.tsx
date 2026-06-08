@@ -6,7 +6,7 @@ import Link from "next/link";
 import MobileMenu from "@/components/MobileMenu";
 import { DEFAULT_PHONE_HREF } from "@/lib/phone";
 
-const KAKAO_CHANNEL_URL = "https://pf.kakao.com/_xxxxxx/chat";
+const KAKAO_CHANNEL_URL = "https://pf.kakao.com/_lLxnGX/chat";
 const BLOG_URL = "https://blog.naver.com/PostList.naver?blogId=mindagain";
 
 const getNavGroups = (phoneHref: string) => [
@@ -33,7 +33,7 @@ const getNavGroups = (phoneHref: string) => [
     key: "reservation",
     label: "예약하기",
     items: [
-      { label: "카톡 예약하기", href: KAKAO_CHANNEL_URL },
+      { label: "카톡 상담하기", href: KAKAO_CHANNEL_URL },
       { label: "전화 예약", href: phoneHref },
     ],
   },
