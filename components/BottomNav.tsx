@@ -1,11 +1,12 @@
 import { DEFAULT_PHONE_HREF } from "@/lib/phone";
 
+const KAKAO_CHANNEL_URL = "https://pf.kakao.com/_lLxnGX/chat";
 const BLOG_URL = "https://blog.naver.com/PostList.naver?blogId=mindagain";
 
 const getBottomNavItems = (phoneHref: string) => [
   { label: "전화", href: phoneHref, icon: "phone" },
   { label: "오시는길", href: "/#location", icon: "map" },
-  { label: "상담", href: "/#services", icon: "chat" },
+  { label: "상담", href: KAKAO_CHANNEL_URL, icon: "chat" },
   { label: "진료시간", href: "/#hours", icon: "clock" },
   { label: "블로그", href: BLOG_URL, icon: "blog" },
 ] as const;

@@ -31,7 +31,7 @@ const getNavGroups = (phoneHref: string) => [
   },
   {
     key: "reservation",
-    label: "예약하기",
+    label: "예약/상담하기",
     items: [
       { label: "카톡 상담하기", href: KAKAO_CHANNEL_URL },
       { label: "전화 예약", href: phoneHref },
