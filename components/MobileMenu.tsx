@@ -27,6 +27,8 @@ function isMenuGroup(item: MobileMenuItem): item is MenuGroup {
 const isExternalHref = (href: string) =>
   href.startsWith("http") || href.startsWith("tel:");
 
+const isHttpExternalHref = (href: string) => href.startsWith("http");
+
 export default function MobileMenu({ items }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -58,10 +60,6 @@ export default function MobileMenu({ items }: MobileMenuProps) {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
     window.history.pushState(null, "", href);
   };
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     function onPageShow(e: PageTransitionEvent) {
@@ -142,6 +140,8 @@ export default function MobileMenu({ items }: MobileMenuProps) {
                           <a
                             key={child.label}
                             href={child.href}
+                            target={isHttpExternalHref(child.href) ? "_blank" : undefined}
+                            rel={isHttpExternalHref(child.href) ? "noopener noreferrer" : undefined}
                             onClick={closeMenu}
                             className={childClassName}
                           >
@@ -177,6 +177,8 @@ export default function MobileMenu({ items }: MobileMenuProps) {
                 <a
                   key={item.label}
                   href={item.href}
+                  target={isHttpExternalHref(item.href) ? "_blank" : undefined}
+                  rel={isHttpExternalHref(item.href) ? "noopener noreferrer" : undefined}
                   onClick={closeMenu}
                   className={itemClassName}
                 >

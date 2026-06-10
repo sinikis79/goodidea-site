@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "@/components/MobileMenu";
+import PhoneContactLink from "@/components/PhoneContactLink";
 import { DEFAULT_PHONE_HREF } from "@/lib/phone";
 
 const KAKAO_CHANNEL_URL = "https://pf.kakao.com/_lLxnGX/chat";
@@ -49,6 +50,8 @@ const standaloneNavItems = [
 
 const isExternalHref = (href: string) =>
   href.startsWith("http") || href.startsWith("tel:");
+
+const isHttpExternalHref = (href: string) => href.startsWith("http");
 
 type SiteHeaderProps = {
   phoneHref?: string;
@@ -166,11 +169,26 @@ export default function SiteHeader({ phoneHref = DEFAULT_PHONE_HREF }: SiteHeade
                       : "text-[#7b786f] hover:bg-[#f1ece5] hover:text-[#2b2a28] focus:bg-[#f1ece5] focus:text-[#2b2a28]"
                   }`;
 
+                  if (item.href.startsWith("tel:")) {
+                    return (
+                      <PhoneContactLink
+                        key={item.label}
+                        href={item.href}
+                        onClick={() => setActiveMenu(null)}
+                        className={itemClassName}
+                      >
+                        {item.label}
+                      </PhoneContactLink>
+                    );
+                  }
+
                   if (isExternalHref(item.href)) {
                     return (
                       <a
                         key={item.label}
                         href={item.href}
+                        target={isHttpExternalHref(item.href) ? "_blank" : undefined}
+                        rel={isHttpExternalHref(item.href) ? "noopener noreferrer" : undefined}
                         onClick={() => setActiveMenu(null)}
                         className={itemClassName}
                       >
@@ -206,6 +224,8 @@ export default function SiteHeader({ phoneHref = DEFAULT_PHONE_HREF }: SiteHeade
                 <a
                   key={item.label}
                   href={item.href}
+                  target={isHttpExternalHref(item.href) ? "_blank" : undefined}
+                  rel={isHttpExternalHref(item.href) ? "noopener noreferrer" : undefined}
                   onMouseEnter={() => setActiveMenu(null)}
                   onFocus={() => setActiveMenu(null)}
                   onClick={() => setActiveMenu(null)}

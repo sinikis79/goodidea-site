@@ -1,4 +1,5 @@
 import { DEFAULT_PHONE_HREF } from "@/lib/phone";
+import PhoneContactLink from "@/components/PhoneContactLink";
 
 const BLOG_URL = "https://blog.naver.com/PostList.naver?blogId=mindagain";
 
@@ -108,28 +109,49 @@ export default function QuickLinksSection({
             className="ql-card"
             style={{ animationDelay: `${index * 100}ms` }}
           >
-            <a
-              href={item.href}
-              className="group flex h-full min-h-[128px] flex-col items-center justify-center rounded-2xl border border-[#e6ded4] bg-[#fffaf2]/95 p-4 text-center shadow-[0_10px_26px_rgba(73,64,55,0.022)] transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-[#d8cec2] hover:bg-[#fffcf7] hover:shadow-[0_16px_38px_rgba(73,64,55,0.05)] active:translate-y-[1px] active:scale-[0.995] sm:min-h-[184px] sm:items-start sm:justify-start sm:bg-[#fffcf7]/92 sm:p-6 sm:text-left sm:shadow-[0_12px_34px_rgba(73,64,55,0.035)]"
-            >
-              <span
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#efe5d7] text-[#7b6047] transition-colors duration-500 group-hover:bg-[#f4eadc] sm:h-auto sm:w-auto sm:rounded-none sm:bg-transparent sm:text-[#6a7059] sm:group-hover:bg-transparent"
+            {item.href.startsWith("tel:") ? (
+              <PhoneContactLink
+                href={item.href}
+                className="group flex h-full min-h-[128px] flex-col items-center justify-center rounded-2xl border border-[#e6ded4] bg-[#fffaf2]/95 p-4 text-center shadow-[0_10px_26px_rgba(73,64,55,0.022)] transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-[#d8cec2] hover:bg-[#fffcf7] hover:shadow-[0_16px_38px_rgba(73,64,55,0.05)] active:translate-y-[1px] active:scale-[0.995] sm:min-h-[184px] sm:items-start sm:justify-start sm:bg-[#fffcf7]/92 sm:p-6 sm:text-left sm:shadow-[0_12px_34px_rgba(73,64,55,0.035)]"
               >
-                <QuickIcon name={item.icon} />
-              </span>
-              <h2 className="mt-2.5 text-[1rem] font-black leading-[1.25] text-[#2b2a28] sm:mt-5 sm:text-[1.35rem]">
-                {item.title}
-              </h2>
-              <p className="mt-2.5 hidden flex-1 text-base leading-7 text-[#7b756c] sm:block">
-                {item.description}
-              </p>
-              <span
-                className="mt-3 hidden self-end text-2xl leading-none text-[#4b4741] transition-transform duration-500 group-hover:translate-x-1 sm:block"
-                aria-hidden="true"
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#efe5d7] text-[#7b6047] transition-colors duration-500 group-hover:bg-[#f4eadc] sm:h-auto sm:w-auto sm:rounded-none sm:bg-transparent sm:text-[#6a7059] sm:group-hover:bg-transparent">
+                  <QuickIcon name={item.icon} />
+                </span>
+                <h2 className="mt-2.5 text-[1rem] font-black leading-[1.25] text-[#2b2a28] sm:mt-5 sm:text-[1.35rem]">
+                  {item.title}
+                </h2>
+                <p className="mt-2.5 hidden flex-1 text-base leading-7 text-[#7b756c] sm:block">
+                  {item.description}
+                </p>
+                <span
+                  className="mt-3 hidden self-end text-2xl leading-none text-[#4b4741] transition-transform duration-500 group-hover:translate-x-1 sm:block"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
+              </PhoneContactLink>
+            ) : (
+              <a
+                href={item.href}
+                className="group flex h-full min-h-[128px] flex-col items-center justify-center rounded-2xl border border-[#e6ded4] bg-[#fffaf2]/95 p-4 text-center shadow-[0_10px_26px_rgba(73,64,55,0.022)] transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-[#d8cec2] hover:bg-[#fffcf7] hover:shadow-[0_16px_38px_rgba(73,64,55,0.05)] active:translate-y-[1px] active:scale-[0.995] sm:min-h-[184px] sm:items-start sm:justify-start sm:bg-[#fffcf7]/92 sm:p-6 sm:text-left sm:shadow-[0_12px_34px_rgba(73,64,55,0.035)]"
               >
-                →
-              </span>
-            </a>
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#efe5d7] text-[#7b6047] transition-colors duration-500 group-hover:bg-[#f4eadc] sm:h-auto sm:w-auto sm:rounded-none sm:bg-transparent sm:text-[#6a7059] sm:group-hover:bg-transparent">
+                  <QuickIcon name={item.icon} />
+                </span>
+                <h2 className="mt-2.5 text-[1rem] font-black leading-[1.25] text-[#2b2a28] sm:mt-5 sm:text-[1.35rem]">
+                  {item.title}
+                </h2>
+                <p className="mt-2.5 hidden flex-1 text-base leading-7 text-[#7b756c] sm:block">
+                  {item.description}
+                </p>
+                <span
+                  className="mt-3 hidden self-end text-2xl leading-none text-[#4b4741] transition-transform duration-500 group-hover:translate-x-1 sm:block"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
+              </a>
+            )}
           </div>
         ))}
       </div>

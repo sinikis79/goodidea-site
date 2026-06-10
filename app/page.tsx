@@ -1,6 +1,7 @@
 import Image from "next/image";
 import TypingText from "@/components/TypingText";
 import BottomNav from "@/components/BottomNav";
+import PhoneContactLink from "@/components/PhoneContactLink";
 import SiteHeader from "@/components/SiteHeader";
 import QuickLinksSection from "@/components/QuickLinksSection";
 import InteriorPreviewSection from "@/components/InteriorPreviewSection";
@@ -146,12 +147,12 @@ export default async function Home() {
               />
             </h1>
             <div className="hero-reveal mx-auto mt-7 flex max-w-[310px] flex-col gap-2.5 [animation-delay:1500ms] sm:max-w-none sm:flex-row sm:justify-center">
-              <a
+              <PhoneContactLink
                 href={phoneHref}
                 className="flex min-h-11 items-center justify-center rounded-xl border border-[#fff7ec]/70 bg-[#fffaf2]/90 px-4 text-[0.86rem] font-black text-[#4b4741] shadow-[0_5px_12px_rgba(23,24,18,0.055)] transition active:scale-[0.98] hover:bg-[#fffcf7] sm:min-w-[140px]"
               >
                 전화로 상담 문의하기
-              </a>
+              </PhoneContactLink>
               <a
                 href="#hours"
                 className="flex min-h-11 items-center justify-center rounded-xl border border-[#fffaf2]/42 bg-[#fffaf2]/9 px-4 text-[0.86rem] font-black text-[#fffaf2] shadow-[0_5px_12px_rgba(23,24,18,0.045)] backdrop-blur-[2px] transition active:scale-[0.98] hover:bg-[#fffaf2]/14 sm:min-w-[140px]"

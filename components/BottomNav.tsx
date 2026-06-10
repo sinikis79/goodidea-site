@@ -3,6 +3,8 @@ import { DEFAULT_PHONE_HREF } from "@/lib/phone";
 const KAKAO_CHANNEL_URL = "https://pf.kakao.com/_lLxnGX/chat";
 const BLOG_URL = "https://blog.naver.com/PostList.naver?blogId=mindagain";
 
+const isHttpExternalHref = (href: string) => href.startsWith("http");
+
 const getBottomNavItems = (phoneHref: string) => [
   { label: "전화", href: phoneHref, icon: "phone" },
   { label: "오시는길", href: "/#location", icon: "map" },
@@ -92,6 +94,8 @@ export default function BottomNav({ phoneHref = DEFAULT_PHONE_HREF }: BottomNavP
           <a
             key={item.label}
             href={item.href}
+            target={isHttpExternalHref(item.href) ? "_blank" : undefined}
+            rel={isHttpExternalHref(item.href) ? "noopener noreferrer" : undefined}
             className="flex min-h-[80px] w-full flex-col items-center justify-center gap-2 rounded-2xl border border-transparent px-1 text-center text-[13px] font-bold leading-tight text-[#4b4741] transition-[transform,background-color,border-color,color] duration-200 ease-out active:scale-[0.98] active:border-[#cfc3b5] active:bg-[#f1ece5]"
           >
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f1ece5] text-[#756c61]">
