@@ -64,11 +64,6 @@ const services = [
   },
 ];
 
-const parkingInfoLines = [
-  "건물 내 지하 주차장은 1시간 무료 이용이 가능합니다.",
-  "주차 공간이 부족하여 장시간 주차대기가 생기는 경우가 있으니 참고 바랍니다.",
-];
-
 export default async function Home() {
   const [hours, interiorImages, hospitalSettings] = await Promise.all([
     getPublicOperatingHours(),
@@ -96,14 +91,6 @@ export default async function Home() {
       </p>
     );
   };
-  const renderLocationDetailLine = (line: string) => (
-    <p
-      key={line}
-      className="text-[0.92rem] leading-6 sm:text-[0.98rem] sm:leading-7"
-    >
-      - {line}
-    </p>
-  );
 
   return (
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
@@ -407,12 +394,6 @@ export default async function Home() {
             <div className="mt-7 max-w-[58ch] space-y-3.5 text-[0.98rem] leading-7 text-[#7b756c] sm:text-[1.05rem] sm:leading-8">
               {hospitalSettings.address ? <p>{hospitalSettings.address}</p> : null}
               {locationDescriptionLines.map(renderLocationLine)}
-              <div>
-                <p>3. 주차정보</p>
-                <div className="mt-3.5 space-y-3.5">
-                  {parkingInfoLines.map(renderLocationDetailLine)}
-                </div>
-              </div>
             </div>
           </div>
 
