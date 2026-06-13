@@ -106,11 +106,6 @@ export default function AdminPage() {
         </div>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-[#f0e8d8] bg-[#fdf6ec] px-5 py-4">
-        <p className="text-[12px] font-bold text-[#b89060]">
-          Mock 데이터 모드 — Supabase 연결 전입니다. 데이터는 실제로 저장되지 않습니다.
-        </p>
-      </div>
     </div>
   );
 }

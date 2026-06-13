@@ -54,8 +54,6 @@ export default function AdminSidebar() {
         >
           로그아웃
         </Link>
-        <p className="text-[11px] text-[#a89e90]">Mock 데이터 모드</p>
-        <p className="text-[11px] text-[#c0b8ad]">Supabase 미연결</p>
       </div>
     </aside>
   );
