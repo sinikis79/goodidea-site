@@ -122,14 +122,14 @@ export default function MobileMenu({ items }: MobileMenuProps) {
           {items.map((item) => {
             if (isMenuGroup(item)) {
               return (
-                <div key={item.label} className="border-b border-[#eadfd3]/70 px-2 py-1.5 last:border-b-0">
+                <div key={item.label} className="border-b border-[#eadfd3]/70 px-2 py-1 last:border-b-0">
                   <p className="rounded-xl px-3 py-1.5 text-[15px] font-black tracking-normal text-[#8a5f42]">
                     {item.label}
                   </p>
 
                   <div className="mt-0.5 space-y-0 pb-0.5">
                     {item.items.map((child) => {
-                      const childClassName = `flex items-center justify-between rounded-xl px-3 py-1.5 text-[14px] font-semibold tracking-[-0.005em] transition ${
+                      const childClassName = `flex items-center justify-between rounded-xl px-3 py-1 text-[13px] font-semibold tracking-normal transition ${
                         isActivePath(child.href)
                           ? "bg-[#f3eee5] text-[#3f3a34]"
                           : "text-[#6f6a61] hover:bg-[#f3eee5] hover:text-[#2b2a28] active:bg-[#eee7dc]"

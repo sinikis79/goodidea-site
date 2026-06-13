@@ -64,6 +64,11 @@ const services = [
   },
 ];
 
+const parkingInfoLines = [
+  "건물 내 지하 주차장은 1시간 무료 이용이 가능합니다.",
+  "주차 공간이 부족하여 장시간 주차대기가 생기는 경우가 있으니 참고 바랍니다.",
+];
+
 export default async function Home() {
   const [hours, interiorImages, hospitalSettings] = await Promise.all([
     getPublicOperatingHours(),
@@ -75,6 +80,30 @@ export default async function Home() {
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
+  const renderLocationLine = (line: string) => {
+    const isDetailLine = line.startsWith("-");
+
+    return (
+      <p
+        key={line}
+        className={
+          isDetailLine
+            ? "text-[0.92rem] leading-6 sm:text-[0.98rem] sm:leading-7"
+            : undefined
+        }
+      >
+        {line}
+      </p>
+    );
+  };
+  const renderLocationDetailLine = (line: string) => (
+    <p
+      key={line}
+      className="text-[0.92rem] leading-6 sm:text-[0.98rem] sm:leading-7"
+    >
+      - {line}
+    </p>
+  );
 
   return (
     <main className="min-h-screen bg-[#f8f5f1] pb-44 text-[#2b2a28] md:pb-0">
@@ -375,16 +404,20 @@ export default async function Home() {
             <h2 className="mt-4 text-[1.85rem] font-black leading-[1.22] tracking-tight sm:text-[2.35rem]">
               {hospitalSettings.location_title}
             </h2>
-            <div className="mt-7 max-w-[58ch] space-y-4 text-[1.05rem] leading-8 text-[#7b756c] sm:text-lg">
+            <div className="mt-7 max-w-[58ch] space-y-3.5 text-[0.98rem] leading-7 text-[#7b756c] sm:text-[1.05rem] sm:leading-8">
               {hospitalSettings.address ? <p>{hospitalSettings.address}</p> : null}
-              {locationDescriptionLines.map((line) => (
-                <p key={line}>{line}</p>
-              ))}
+              {locationDescriptionLines.map(renderLocationLine)}
+              <div>
+                <p>3. 주차정보</p>
+                <div className="mt-3.5 space-y-3.5">
+                  {parkingInfoLines.map(renderLocationDetailLine)}
+                </div>
+              </div>
             </div>
           </div>
 
           {hospitalSettings.location_image_url ? (
-            <div className="group overflow-hidden rounded-2xl border border-[#e5ddd4] bg-[#f8f5f1] shadow-[0_18px_42px_rgba(73,64,55,0.06)]">
+            <div className="group overflow-hidden rounded-2xl border border-[#e5ddd4] bg-[#f8f5f1] shadow-[0_18px_42px_rgba(73,64,55,0.06)] lg:mt-8">
               <Image
                 src={hospitalSettings.location_image_url}
                 alt={
@@ -411,6 +444,23 @@ export default async function Home() {
           )}
         </div>
       </section>
+
+      <footer className="border-t border-[#e5ddd4] bg-[#fffcf7] px-5 py-7 text-[#7b756c] md:px-8">
+        <div className="mx-auto max-w-[1400px] space-y-1.5 text-[0.8rem] font-bold leading-5 md:text-[0.82rem]">
+          <p className="font-black text-[#4b4741]">
+            판교다시봄 정신건강의학과의원
+          </p>
+          <p>대표자 : 남유림 / 사업자 등록번호 : 867-98-01923</p>
+          <p>
+            주소 : 경기도 성남시 분당구 판교역로192번길 16, 5층 507,
+            508호
+          </p>
+          <p>
+            Copyright © 2026 판교다시봄정신건강의학과의원. All rights
+            reserved
+          </p>
+        </div>
+      </footer>
 
       <BottomNav phoneHref={phoneHref} />
     </main>

@@ -8,6 +8,7 @@ const navItems = [
   { label: "공지사항 관리", href: "/admin/notices" },
   { label: "의료진 관리", href: "/admin/doctors" },
   { label: "병원 둘러보기", href: "/admin/interior" },
+  { label: "비급여안내", href: "/admin/non-covered" },
   { label: "기본정보 설정", href: "/admin/settings" },
 ];
 
